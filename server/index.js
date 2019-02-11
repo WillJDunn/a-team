@@ -23,16 +23,22 @@ app.get('/api/greeting', (req, res) => {
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-app.get('/api/user', (req, res) => {
-  userDao.getUsers().then(rows => {
-    res.send(JSON.stringify(rows));
-  });
+app.get('/api/user', (req, res, next) => {
+  userDao.getUsers()
+    .then(rows => {
+      res.send(JSON.stringify(rows));
+    })
+    // FIXME error handling doesn't seem to be doing anything right now.
+    .catch(next);
 });
 
-app.get('/api/user/:userId', (req, res) => {
-  userDao.getUser(req.params.userId).then(row => {
-    res.send(JSON.stringify(row));
-  });
+app.get('/api/user/:userId', (req, res, next) => {
+  userDao.getUser(req.params.userId)
+    .then(row => {
+      res.send(JSON.stringify(row));
+    })
+    // FIXME error handling doesn't seem to be doing anything right now.
+    .catch(next);
 });
 
 app.listen(SERVER_PORT, () => {

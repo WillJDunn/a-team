@@ -37,13 +37,17 @@ class Database {
   }
 }
 
-export const getUsers = () => {
+const getUsers = () => {
   const db = new Database(config);
   return db.query('SELECT * from User;');
 };
 
-export const getUser = (userId) => {
+const getUser = (userId) => {
   const db = new Database(config);
-  return db.query(`SELECT * from User WHERE  ?;`, [userId]);
+  return db.query(`SELECT * from User WHERE id = ?;`, [userId]);
 };
 
+module.exports = {
+  getUsers,
+  getUser,
+};
