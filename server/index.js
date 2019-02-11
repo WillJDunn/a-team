@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger');
-const mysql = require('mysql');
+const userDao = require('./dao/userDao.js');
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
@@ -10,14 +10,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // adds fairly verbose logging to the npm server start command
 app.use(pino());
 
-const connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'dbuser',
-  password : 'ATeamDBUser2019!',
-  database : 'ateam'
-});
-
-connection.connect();
 
 app.get('/', (req, res) => {
   console.log('got GET on root');
@@ -32,28 +24,15 @@ app.get('/api/greeting', (req, res) => {
 });
 
 app.get('/api/user', (req, res) => {
-  connection.query('SELECT * from User;', function (error, results, fields) {
-    if (error) {
-      throw error;
-    }
-    console.log('The solution is: ', results);
-    console.log('Fields: ', fields);
-    res.send(JSON.stringify(results));
+  userDao.getUsers().then(rows => {
+    res.send(JSON.stringify(rows));
   });
+});
 
-  app.get('/api/user/:userId', (req, res) => {
-    const userId = req.params.userId;
-    connection.query(`SELECT * from User where id = "${userId}"`, (error, results, fields) => {
-      if (error) {
-        throw error
-      }
-      console.log('Results: ', results);
-      console.log('Fields: ', fields);
-      res.send(JSON.stringify(results));
-    });
+app.get('/api/user/:userId', (req, res) => {
+  userDao.getUser(req.params.userId).then(row => {
+    res.send(JSON.stringify(row));
   });
-
-  // connection.end();
 });
 
 app.listen(SERVER_PORT, () => {
