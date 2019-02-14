@@ -7,13 +7,19 @@ const config = {
   database : 'ateam'
 };
 
+const pooledConfig = config.connectionLimit = 10; // arbitrary number of connections
+
+
+
 // const connection = mysql.createConnection(config);
 
 // connection.connect();
 // taken from https://codeburst.io/node-js-mysql-and-promises-4c3be599909b
 class Database {
-  constructor(config) {
-    this.connection = mysql.createConnection(config);
+  constructor(connectionConfig) {
+    // use pooled connections: https://www.npmjs.com/package/mysql#pooling-connections
+    this.connection = mysql.createPool(connectionConfig);
+    // this.connection = mysql.createConnection(config);
   }
   query(sql, args) {
     return new Promise((resolve, reject) => {
@@ -38,13 +44,17 @@ class Database {
 }
 
 const getUsers = () => {
-  const db = new Database(config);
-  return db.query('SELECT * from User;');
+  const db = new Database(pooledConfig);
+  const results = db.query('SELECT * from User;');
+  db.close();
+  return results;
 };
 
 const getUser = (userId) => {
-  const db = new Database(config);
-  return db.query(`SELECT * from User WHERE id = ?;`, [userId]);
+  const db = new Database(pooledConfig);
+  const results =  db.query(`SELECT * from User WHERE id = ?;`, [userId]);
+  db.close();
+  return results;
 };
 
 module.exports = {
