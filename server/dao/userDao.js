@@ -7,9 +7,7 @@ const config = {
   database : 'ateam'
 };
 
-const pooledConfig = config.connectionLimit = 10; // arbitrary number of connections
-
-
+// const pooledConfig = config.connectionLimit = 10;
 
 // const connection = mysql.createConnection(config);
 
@@ -18,8 +16,8 @@ const pooledConfig = config.connectionLimit = 10; // arbitrary number of connect
 class Database {
   constructor(connectionConfig) {
     // use pooled connections: https://www.npmjs.com/package/mysql#pooling-connections
-    this.connection = mysql.createPool(connectionConfig);
-    // this.connection = mysql.createConnection(config);
+    // this.connection = mysql.createPool(connectionConfig);
+    this.connection = mysql.createConnection(connectionConfig);
   }
   query(sql, args) {
     return new Promise((resolve, reject) => {
@@ -44,14 +42,14 @@ class Database {
 }
 
 const getUsers = () => {
-  const db = new Database(pooledConfig);
+  const db = new Database(config);
   const results = db.query('SELECT * from User;');
   db.close();
   return results;
 };
 
 const getUser = (userId) => {
-  const db = new Database(pooledConfig);
+  const db = new Database(config);
   const results =  db.query(`SELECT * from User WHERE id = ?;`, [userId]);
   db.close();
   return results;
