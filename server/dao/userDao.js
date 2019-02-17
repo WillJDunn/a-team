@@ -4,55 +4,46 @@ const config = {
   host     : 'localhost',
   user     : 'dbuser',
   password : 'ATeamDBUser2019!',
-  database : 'ateam'
+  database : 'ateam',
+  connectionLimit: 10 // default
 };
 
-// const pooledConfig = config.connectionLimit = 10;
-
-// const connection = mysql.createConnection(config);
-
-// connection.connect();
-// taken from https://codeburst.io/node-js-mysql-and-promises-4c3be599909b
-class Database {
+// adapted from https://codeburst.io/node-js-mysql-and-promises-4c3be599909b
+class PooledDatabaseConnection {
   constructor(connectionConfig) {
     // use pooled connections: https://www.npmjs.com/package/mysql#pooling-connections
-    // this.connection = mysql.createPool(connectionConfig);
-    this.connection = mysql.createConnection(connectionConfig);
+    this.pool = mysql.createPool(connectionConfig);
   }
+
   query(sql, args) {
     return new Promise((resolve, reject) => {
-      this.connection.query(sql, args, (err, rows) => {
+      this.pool.getConnection((err, connection) => {
         if (err) {
+          // need to release the connection when done whether through error or successful completion
+          connection.release();
           return reject(err);
         }
-        resolve(rows);
-      });
-    });
-  }
-  close() {
-    return new Promise((resolve, reject) => {
-      this.connection.end(err => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
+        connection.query(sql, args, (err, rows) => {
+          if (err) {
+            connection.release();
+            return reject(err);
+          }
+          connection.release();
+          resolve(rows);
+        });
       });
     });
   }
 }
 
 const getUsers = () => {
-  const db = new Database(config);
-  const results = db.query('SELECT * from User;');
-  db.close();
-  return results;
+  const db = new PooledDatabaseConnection(config);
+  return db.query('SELECT * from User;')
 };
 
 const getUser = (userId) => {
-  const db = new Database(config);
-  const results =  db.query(`SELECT * from User WHERE id = ?;`, [userId]);
-  db.close();
-  return results;
+  const db = new PooledDatabaseConnection(config);
+  return db.query(`SELECT * from User WHERE id = ?;`, [userId]);
 };
 
 module.exports = {
