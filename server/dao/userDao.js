@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 
+// not sure where the best place for this is, but this is not it
 const config = {
   host     : 'localhost',
   user     : 'dbuser',
