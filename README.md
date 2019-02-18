@@ -70,6 +70,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### TeamA DB
 
 The included SQL script creates a schema "teama" owned by a new user "teama" with default password "team1_teamA". It requires MYSQL 8+.  The following views should be used when querying tables:
+
 | Table         | View          
 | ------------- |-------------
 | items         | v_items 
