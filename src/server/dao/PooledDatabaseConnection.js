@@ -1,11 +1,15 @@
 const mysql = require('mysql');
-
+const config = require('../config/db');
 
 // adapted from https://codeburst.io/node-js-mysql-and-promises-4c3be599909b
 class PooledDatabaseConnection {
   constructor(connectionConfig) {
     // use pooled connections: https://www.npmjs.com/package/mysql#pooling-connections
-    this.pool = mysql.createPool(connectionConfig);
+    if (!PooledDatabaseConnection.instance) {
+      this.pool = mysql.createPool(connectionConfig);
+      PooledDatabaseConnection.instance = this;
+    }
+    return PooledDatabaseConnection.instance;
   }
 
   query(sql, args) {
@@ -29,4 +33,8 @@ class PooledDatabaseConnection {
   }
 }
 
-module.exports = PooledDatabaseConnection;
+// make this a Singleton instance: https://www.sitepoint.com/javascript-design-patterns-singleton/
+const instance = new PooledDatabaseConnection(config);
+Object.freeze(instance);
+
+module.exports = instance;

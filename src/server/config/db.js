@@ -1,3 +1,4 @@
+// maybe this should go in .env?  maybe not.  open to suggestions
 const config = {
   host     : 'localhost',
   user     : 'teama',

@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger');
-const userDao = require('./dao/userDao.js');
+const userRoutes = require('./routes/user');
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
@@ -23,23 +23,10 @@ app.get('/api/greeting', (req, res) => {
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-app.get('/api/user', (req, res, next) => {
-  userDao.getUsers()
-    .then(rows => {
-      res.send(JSON.stringify(rows));
-    })
-    // FIXME error handling doesn't seem to be doing anything right now.
-    .catch(next);
-});
-
-app.get('/api/user/:userId', (req, res, next) => {
-  userDao.getUser(req.params.userId)
-    .then(row => {
-      res.send(JSON.stringify(row));
-    })
-    // FIXME error handling doesn't seem to be doing anything right now.
-    .catch(next);
-});
+// Put new routes for new resources in their own file under the routes directory and then
+// apply them to the app in this way.
+// More information here: https://expressjs.com/en/guide/routing.html
+app.use('/api/user', userRoutes);
 
 app.listen(SERVER_PORT, () => {
   console.log(`Express server is running on localhost:${SERVER_PORT}`);
