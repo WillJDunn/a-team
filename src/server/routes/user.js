@@ -20,4 +20,18 @@ router.get('/:userId', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/', (req, res, next) => {
+  const user = {
+    userName: 'foo',
+    password: 'foo',
+    email: 'foo2@domain.com',
+    emailVerified: true,
+    registeredAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+  };
+  // if you don't res.send something the request just hangs
+  userDao.createUser(user)
+    .then(() => res.send('Created'))
+    .catch(next);
+});
+
 module.exports = router;

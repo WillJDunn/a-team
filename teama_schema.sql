@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `teama`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `teama`.`users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `user_name` VARCHAR(45) NOT NULL,
+  `user_name` VARCHAR(45) NOT NULL UNIQUE,
   `password` VARBINARY(256) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `email_verified` TINYINT NULL DEFAULT 0,
@@ -338,7 +338,7 @@ DROP TABLE IF EXISTS `teama`.`v_items`;
 DROP VIEW IF EXISTS `teama`.`v_items` ;
 USE `teama`;
 CREATE OR REPLACE VIEW `v_items` AS
-    SELECT 
+    SELECT
         items.item_id,
         items.project_id,
         projects.project_name,
@@ -384,7 +384,7 @@ DROP TABLE IF EXISTS `teama`.`v_issues`;
 DROP VIEW IF EXISTS `teama`.`v_issues` ;
 USE `teama`;
 CREATE OR REPLACE VIEW `v_issues` AS
-    SELECT 
+    SELECT
         items.item_id,
         items.project_id,
         projects.project_name,
@@ -432,7 +432,7 @@ DROP TABLE IF EXISTS `teama`.`v_comments`;
 DROP VIEW IF EXISTS `teama`.`v_comments` ;
 USE `teama`;
 CREATE OR REPLACE VIEW `v_comments` AS
-    SELECT 
+    SELECT
         comments.comment_id,
         comments.item_id,
         comments.user_id,
@@ -451,7 +451,7 @@ DROP TABLE IF EXISTS `teama`.`v_time_entries`;
 DROP VIEW IF EXISTS `teama`.`v_time_entries` ;
 USE `teama`;
 CREATE OR REPLACE VIEW `v_time_entries` AS
-    SELECT 
+    SELECT
         time_entries.time_entry_id,
         time_entries.item_id,
         items.item_name,
