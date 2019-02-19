@@ -30,7 +30,9 @@ CREATE TABLE IF NOT EXISTS `teama`.`users` (
   `email_verified` TINYINT NULL DEFAULT 0,
   `registered_at` DATETIME NULL,
   PRIMARY KEY (`user_id`),
-  INDEX `idx_user_name` (`user_name` ASC))
+  INDEX `idx_user_name` (`user_name` ASC),
+  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
 
 
