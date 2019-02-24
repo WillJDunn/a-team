@@ -4,8 +4,8 @@ const userDao = require('../dao/userDao');
 
 router.get('/', (req, res, next) => {
   userDao.getUsers()
-    .then(rows => {
-      res.send(JSON.stringify(rows));
+    .then(users => {
+      res.send(JSON.stringify(users));
     })
     // FIXME error handling doesn't seem to be doing anything right now.
     .catch(next);
@@ -13,8 +13,8 @@ router.get('/', (req, res, next) => {
 
 router.get('/:userId', (req, res, next) => {
   userDao.getUser(req.params.userId)
-    .then(row => {
-      res.send(JSON.stringify(row));
+    .then(user => {
+      res.send(JSON.stringify(user));
     })
     // FIXME error handling doesn't seem to be doing anything right now.
     .catch(next);
@@ -22,7 +22,7 @@ router.get('/:userId', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   const user = {
-    userName: 'foo',
+    username: 'foo',
     password: 'foo',
     email: 'foo2@domain.com',
     emailVerified: true,

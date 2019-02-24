@@ -4,6 +4,9 @@
 # ignore build directory
 build/
 
+# ignore sessions directory
+sessions/
+
 # ignore npm package-lock.json
 package-lock.json
 
