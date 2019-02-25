@@ -1,5 +1,6 @@
 class User {
-  constructor(username, password, email, isVerified, registeredAt) {
+  constructor(userId, username, password, email, isVerified, registeredAt) {
+    this.id = userId;
     this.username = username;
     this.password = password;
     this.email = email;
@@ -9,6 +10,7 @@ class User {
 
   static fromDB(dbUser) {
     return new User(
+      dbUser.user_id,
       dbUser.user_name,
       dbUser.password,
       dbUser.email,

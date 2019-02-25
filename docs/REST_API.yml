@@ -1,0 +1,298 @@
+# Projects
+- name: /api/projects
+  verb: GET
+  description: |
+    Get a list of projects
+  response:
+    - id: project id
+      name: project name
+      description: project description
+- name: /api/projects
+  verb: POST
+  description: |
+    Create a new project
+  requestBody:
+    name: project name
+    description: project description
+  response: 200 OK projectId
+- name: /api/projects/:projectId
+  verb: GET
+  description: |
+    Get a specific project by project id
+  pathParams:
+    projectId: the id of the project to retrieve
+  response:
+    success:
+      id: project id
+      name: project name
+      description: project description
+- name: /api/projects/:projectId/user/:username
+  verb: POST
+  description: |
+    Add an already existing user to an already existing project
+  pathParams:
+    projectId: the id of the project to add the user to
+    username: the username of the user to add to the project
+  response:
+    success: 200 OK
+
+# Boards
+- name: /api/boards
+  verb: GET
+  description: |
+    Get a list of boards
+  response:
+    success:
+      - id: board id
+        projectId: project id
+        name: board name
+        description: board description
+- name: /api/boards
+  verb: POST
+  description: |
+    Create a new board
+  requestBody:
+    name: board name
+    projectId: project id
+    description: board description
+  response:
+    success: 200 OK boardId
+- name: /api/boards/:boardId
+  verb: GET
+  description: |
+    Get a specific board by board id
+  pathParams:
+    boardId: the id of the board to retrieve
+  response:
+    success:
+      id: board id
+      projectId: project id
+      name: board name
+      description: board description
+- name: /api/boards/:boardId/user/:username
+  verb: POST
+  description: |
+    Add an already existing user to an already existing board
+  pathParams:
+    boardId: id of the board to add the user to
+    username: username of the user to add
+  responses:
+    success: 200 Ok
+
+# Priorities
+- name: /api/priorities
+  verb: GET
+  description: |
+    Get a list of priority objects
+  response:
+    success:
+      - id: priority id
+        projectId: project id
+        name: priority name
+        description: priority description
+- name: /api/priorities
+  verb: POST
+  description: |
+    Create a new priority
+  requestBody:
+    projectId: project id
+    name: priority name
+    description: priority description
+- name: /api/priorites/:priorityId
+  verb: GET
+  description: |
+    Get a specific priority object by priority id
+  response:
+    success:
+      id: priority id
+      projectId: project id
+      name: priority name
+      description: priority description
+
+# Statuses
+- name: /api/statuses
+  verb: GET
+  description: |
+    Get a list of status objects
+  response:
+    success:
+      - id: status id
+        boardId: project id
+        name: status name
+        description: status description
+- name: /api/statuses
+  verb: POST
+  description: |
+    Create a new status
+  requestBody:
+    boardId: project id
+    name: status name
+    description: status description
+- name: /api/priorites/:statusId
+  verb: GET
+  description: |
+    Get a specific status object by status id
+  response:
+    success:
+      id: status id
+      boardId: board id
+      name: status name
+      description: status description
+
+# Items
+- name: /api/items
+  verb: GET
+  description: |
+    Get a list of all items (issues and stories)
+  requestParams:
+    type: ISSUE|STORY specify if the returned list of items should only contain items of a certain type
+    dueByStart: search for items whose due_date are after dueByStart
+    dueByEnd: search for items whose due_date are before dueByEnd
+    assignedto: search for items who are assigned to a user id
+    priority: pass in a list of priorities, and only items with those priorities will be displayed
+  response:
+    success:
+      - id: item id
+        projectId: project id
+        boardId: board id
+        statusId: status id
+        priorityId: priority id
+        isIssue: whether or not this item is an issue
+        name: name of the item
+        description: description of the item
+        dueDate: date item is due by
+        timeEstimate: estimate of amount of time to complete the item
+        createdBy: user id of the person who created the item
+        assignedTo: user id of the person who the item is assigned to
+        labels: free text field containing labels
+- name: /api/items
+  verb: POST
+  description: |
+    Create a new item (story or issue)
+  requestBody:
+    projectId: project id
+    boardId: board id
+    statusId: status id
+    priorityId: priority id
+    isIssue: whether or not this item is an issue
+    name: name of the item
+    description: description of the item
+    dueDate: date item is due by
+    timeEstimate: estimate of amount of time to complete the item
+    createdBy: user id of the person who created the item
+    assignedTo: user id of the person who the item is assigned to
+    labels: free text field containing labels
+  response:
+    success: 200 OK item id
+- name: /api/items/:itemId
+  verb: GET
+  description: |
+    Retrieve an item by id
+  response:
+    success:
+      id: item id
+      projectId: project id
+      boardId: board id
+      statusId: status id
+      priorityId: priority id
+      isIssue: whether or not this item is an issue
+      name: name of the item
+      description: description of the item
+      dueDate: date item is due by
+      timeEstimate: estimate of amount of time to complete the item
+      createdBy: user id of the person who created the item
+      assignedTo: user id of the person who the item is assigned to
+      labels: free text field containing labels
+- name: /api/items/:itemId
+  verb: POST
+  description: |
+    Replace an item with a new item
+  requestBody:
+    projectId: project id
+    boardId: board id
+    statusId: status id
+    priorityId: priority id
+    isIssue: whether or not this item is an issue
+    name: name of the item
+    description: description of the item
+    dueDate: date item is due by
+    timeEstimate: estimate of amount of time to complete the item
+    createdBy: user id of the person who created the item
+    assignedTo: user id of the person who the item is assigned to
+    labels: free text field containing labels
+  response:
+    success: 200 OK item id
+- name: /api/items/:itemId/comments
+  verb: GET
+  description: |
+   Get all comments for an item
+  response:
+    success:
+      - id: comment id
+        itemId: item id
+        userId: user id
+        createdAt: created at time
+        comment: text of comment
+- name: /api/items/:itemId/comments
+  verb: POST
+  description: |
+    Add a new comment to the item
+  requestBody:
+    itemId: item id
+    userId: user id
+    createdAt: created at time
+    comment: text of comment
+  response:
+    success: 200 OK comment id
+
+# Users
+- name: /api/users
+  verb: GET
+  description: |
+    Get a list of all users
+  response:
+    success:
+      - id: user id
+        username: username
+        email: email address
+        registeredAt: when the user was created
+        emailVerified: whether or not the email address has been verified
+- name: /api/users/:username
+  verb: GET
+  description: |
+    Get a single user object
+  pathParams:
+    username: username of the user to retrieve
+  response:
+    success:
+      id: user id
+      username: username
+      email: email address
+      registeredAt: when the user was created
+      emailVerified: whether or not the email address has been verified
+- name: /api/users
+  verb: POST
+  description: |
+    Create a new user
+  requestBody:
+    username: username
+    password: user's clear text password
+    email: email address
+  response:
+    success: 200 OK user id of created user
+
+# Auth
+- name: /login
+  verb: POST
+  description: |
+    Login to the app and generate a session cookie
+  requestBody:
+    username: username
+    password: clear text password
+  response:
+    success: 200 OK
+- name: /logout
+  verb: GET
+  description: |
+    Log a user out of the app (clear session and cookies)
+  response: 200 Ok

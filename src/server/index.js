@@ -7,8 +7,7 @@ const FileStore = require('session-file-store')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const userDao = require('./dao/userDao');
-
-const userRoutes = require('./routes/user');
+const usersRoutes = require('./routes/users');
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
@@ -75,7 +74,9 @@ app.post('/login', (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.send('You were authenticated & logged in!');
+      const outputUser = { ...req.user };
+      delete outputUser.password;
+      return res.status(200).json(outputUser);
     });
   })(req, res, next);
 });
@@ -114,7 +115,7 @@ app.get('/authrequired', (req, res) => {
 // Put new routes for new resources in their own file under the routes directory and then
 // apply them to the app in this way.
 // More information here: https://expressjs.com/en/guide/routing.html
-app.use('/api/user', userRoutes);
+app.use('/api/users', usersRoutes);
 
 app.listen(SERVER_PORT, () => {
   console.log(`Express server is running on localhost:${SERVER_PORT}`);
