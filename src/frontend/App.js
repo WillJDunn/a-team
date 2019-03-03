@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginWidget from './LoginWidget';
+import LoginPage from './login/LoginPage';
 
-const App = (props) => (
+const App = props => (
   <React.Fragment>
-    <LoginWidget />
+    <LoginPage />
   </React.Fragment>
 );
 
