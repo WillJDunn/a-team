@@ -6,6 +6,7 @@ const BoardsPage = props => {
   return (
     <React.Fragment>
       <Link to="/projects/">Projects</Link>
+      <div>Project {projectId}</div>
       <div>Boards Page</div>
       {[1, 2, 3, 4, 5].map(i => {
         const link = `/projects/${projectId}/boards/${i}`;

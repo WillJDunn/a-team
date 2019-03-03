@@ -55,7 +55,6 @@ router.get('/:userId', (req, res, next) => {
  *       "username": "firstInitialLastName",
  *       "password": "password1234",
  *       "email": "foo@domain.com",
- *       "emailVerified": true
  *     }
  *
  * @apiSuccess (200) {User} the newly created user object
