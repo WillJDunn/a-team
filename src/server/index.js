@@ -94,13 +94,6 @@ app.get('/logout', (req, res, next) => {
 });
 
 
-app.get('/api/greeting', (req, res) => {
-  console.log('got GET request at /api/greeting');
-  const name = req.query.name || 'World';
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
-
 app.get('/authrequired', (req, res) => {
   console.log('inside GET /authrequired callback');
   console.log(`User authenticated? ${req.isAuthenticated()}`);

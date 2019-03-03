@@ -8,6 +8,10 @@ const getUser = userName =>
   db.query(`SELECT * from teama.users WHERE user_name = ?;`, [userName])
     .then(data => User.fromDB(data[0]));
 
+const getUserById = userId =>
+  db.query(`SELECT * from teama.users WHERE user_id = ?;`, [userId])
+    .then(data => User.fromDB(data[0]));
+
 
 const createUser = user => {
   const values = [
@@ -29,6 +33,7 @@ const authenticate = (username, password) =>
 module.exports = {
   getUsers,
   getUser,
+  getUserById,
   createUser,
   authenticate,
 };

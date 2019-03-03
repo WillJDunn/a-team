@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const userDao = require('../dao/userDao');
 
+const cleanUser = user => {
+  const outputUser = { ...user };
+  delete outputUser.password;
+  return outputUser;
+};
+
 /**
  * @api {get} /api/users Request a list of users
  * @apiName GetUsers
@@ -12,9 +18,9 @@ const userDao = require('../dao/userDao');
 router.get('/', (req, res, next) => {
   userDao.getUsers()
     .then(users => {
-      res.send(JSON.stringify(users));
+      const cleanedUsers = users.map(user => cleanUser(user));
+      res.send(JSON.stringify(cleanedUsers));
     })
-    // FIXME error handling doesn't seem to be doing anything right now.
     .catch(next);
 });
 
@@ -28,11 +34,10 @@ router.get('/', (req, res, next) => {
  * @apiSuccess {User} Single User whose username matches userId
  */
 router.get('/:userId', (req, res, next) => {
-  userDao.getUser(req.params.userId)
+  userDao.getUserById(req.params.userId)
     .then(user => {
-      res.send(JSON.stringify(user));
+      res.send(JSON.stringify(cleanUser(user)));
     })
-    // FIXME error handling doesn't seem to be doing anything right now.
     .catch(next);
 });
 
@@ -53,19 +58,23 @@ router.get('/:userId', (req, res, next) => {
  *       "emailVerified": true
  *     }
  *
- * @apiSuccess (200) {String} username The Username of the created User
+ * @apiSuccess (200) {User} the newly created user object
  */
 router.post('/', (req, res, next) => {
+  const { username, email, password } = req.body;
   const user = {
-    username: 'foo',
-    password: 'foo',
-    email: 'foo2@domain.com',
+    username,
+    password,
+    email,
     emailVerified: true,
     registeredAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
   };
-  // if you don't res.send something the request just hangs
+
   userDao.createUser(user)
-    .then(() => res.send('Created'))
+    .then(dbRes => {
+      userDao.getUserById(dbRes.insertId)
+        .then(user => res.send(JSON.stringify(cleanUser(user))))
+    })
     .catch(next);
 });
 

@@ -52,13 +52,13 @@ const CreateUserWidget = props => {
       },
       body: JSON.stringify(data),
     };
-    const response = await fetch('/createUser', opts);
+    const response = await fetch('/api/users', opts);
     if (Math.floor(response.status / 100 ) !== 2) { // failure
       setError('Create User failed!');
       return;
     } // success
+    // FIXME put user in redux state when we have it implemented
     const user = await response.json();
-    console.log(user);
     window.location = '/'; // FIXME this should be react-router push
   }
   return (
