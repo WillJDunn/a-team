@@ -7,8 +7,10 @@ const BoardsPage = props => {
     <React.Fragment>
       <Link to="/projects/">Projects</Link>
       <div>Boards Page</div>
-      {[1, 2, 3, 4, 5].map(i => <div><Link to={`/projects/${projectId}/boards/${i}`}>{`Board ${i}`}</Link>
-      </div>)}
+      {[1, 2, 3, 4, 5].map(i => {
+        const link = `/projects/${projectId}/boards/${i}`;
+        return <div key={link}><Link to={link}>{`Board ${i}`}</Link></div>;
+      })}
     </React.Fragment>
   )
 };
