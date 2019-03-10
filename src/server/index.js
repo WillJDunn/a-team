@@ -8,6 +8,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const userDao = require('./dao/userDao');
 const usersRoutes = require('./routes/users');
+const projectsRoutes = require('./routes/projects');
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
@@ -109,6 +110,7 @@ app.get('/authrequired', (req, res) => {
 // apply them to the app in this way.
 // More information here: https://expressjs.com/en/guide/routing.html
 app.use('/api/users', usersRoutes);
+app.use('/api/projects', projectsRoutes);
 
 app.listen(SERVER_PORT, () => {
   console.log(`Express server is running on localhost:${SERVER_PORT}`);
