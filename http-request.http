@@ -1,0 +1,27 @@
+POST http://localhost:3001/login
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "jgoddard",
+  "password": "jgoddard"
+}
+
+###
+
+GET http://localhost:3001/api/users/jgoddard
+
+###
+
+GET http://localhost:3001/api/users/
+
+###
+GET http://localhost:3001/authrequired
+Cookie:  connect.sid=s%3A4d229aba-e623-4dd4-a8b3-812b26faf7f9.3hkp1BvkgvHyhuun2%2B8Km7fZkx3H%2FaEKiUkhox81Uf4; Path=/; HttpOnly
+
+###
+
+GET http://localhost:3001/logout
+
+###
