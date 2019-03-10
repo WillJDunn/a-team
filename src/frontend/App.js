@@ -1,10 +1,13 @@
 import React from 'react';
-import LoginPage from './login/LoginPage';
+import { Provider } from 'react-redux'
+import configureAppStore from './store/store'
+import Routes from './Routes';
 
-const App = props => (
-  <React.Fragment>
-    <LoginPage />
-  </React.Fragment>
+
+const App = () => (
+  <Provider store={configureAppStore()}>
+    <Routes />
+  </Provider>
 );
 
 export default App;
