@@ -11,7 +11,7 @@ import BoardPage from './boards/BoardPage';
 const Routes = () => (
   <Router>
     <div>
-      <Route exact path="/" component={HomePage} />
+      <Route path="/" component={HomePage} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/projects" component={ProjectsPage} />
       <Route exact path="/projects/:projectId" component={ProjectPage}/>
