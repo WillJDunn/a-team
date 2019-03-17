@@ -1,11 +1,12 @@
 import React from 'react';
+import { compose } from 'redux-starter-kit';
 import { connect } from 'react-redux';
 import LoginWidget from './LoginWidget';
 import { loginSuccessful, loginFailed  } from '../reducers/user';
 import * as selectors from '../reducers/rootReducer';
 import { withRouter } from 'react-router-dom';
 
-const login = (username, password, history) => dispatch  => {
+export const login = (username, password, history) => dispatch  => {
   const data = { username, password };
   const opts = {
     method: 'POST',
@@ -42,4 +43,9 @@ const mapDispatchToProps = dispatch => ({
   onSubmit: history => (username, password) => dispatch(login(username, password, history))
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginWidgetContainer));
+const enhance = compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+);
+
+export default enhance(LoginWidgetContainer);

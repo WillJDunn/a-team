@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import LoginWidgetContainer from './LoginWidgetContainer';
-import CreateUserWidget from './CreateUserWidget';
+import CreateUserWidgetContainer from './CreateUserWidgetContainer';
 
 const styles = () => ({
   paperRoot: {
@@ -47,7 +47,7 @@ const LoginPage = props => {
             </Tabs>
           </AppBar>
           {value === 0 && <div style={_style.centered}><LoginWidgetContainer /></div>}
-          {value === 1 && <div style={_style.centered}><CreateUserWidget /></div>}
+          {value === 1 && <div style={_style.centered}><CreateUserWidgetContainer /></div>}
         </Paper>
       </div>
     );

@@ -4,9 +4,13 @@ const User = require('../dto/User');
 const getUsers = () => db.query('SELECT * from teama.users;')
   .then(results => results.map(result => User.fromDB(result)));
 
-const getUser = userName =>
-  db.query(`SELECT * from teama.users WHERE user_name = ?;`, [userName])
+const getUser = userName => {
+  console.log(userName);
+  return db.query(`SELECT *
+                   from teama.users
+                   WHERE user_name = ?;`, [userName])
     .then(data => User.fromDB(data[0]));
+};
 
 const getUserById = userId =>
   db.query(`SELECT * from teama.users WHERE user_id = ?;`, [userId])

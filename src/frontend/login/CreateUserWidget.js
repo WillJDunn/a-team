@@ -35,7 +35,7 @@ const CreateUserWidget = props => {
   const [secondPassword, setSecondPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  async function createUser(username, password, email) {
+  const onSubmit = (username, password, secondPassword, email) => {
     if (!doPasswordsMatch(password, secondPassword)) {
       setError('Passwords must match!');
       return;
@@ -44,23 +44,9 @@ const CreateUserWidget = props => {
       setError('Email must be a valid email address!');
       return;
     }
-    const data = { username, password, email };
-    const opts = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-    const response = await fetch('/api/users', opts);
-    if (Math.floor(response.status / 100 ) !== 2) { // failure
-      setError('Create User failed!');
-      return;
-    } // success
-    // FIXME put user in redux state when we have it implemented
-    const user = await response.json();
-    window.location = '/'; // FIXME this should be react-router push
-  }
+    props.onSubmit(username, password, email);
+  };
+
   return (
     <div style={_style.root}>
       <div style={_style.errorContainer}>
@@ -105,7 +91,7 @@ const CreateUserWidget = props => {
           variant="contained"
           fullWidth
           disabled={!Boolean(username && password && secondPassword && email)}
-          onClick={() => createUser(username, password, email)}
+          onClick={() => onSubmit(username, password, secondPassword, email)}
           color="primary"
         >
           SUBMIT

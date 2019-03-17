@@ -31,5 +31,6 @@ const user = (state = initialState, action) => {
 };
 
 export const getIsError = state => state.get('isError');
+export const getUsername = state => state.getIn(['user', 'username']);
 
 export default user;

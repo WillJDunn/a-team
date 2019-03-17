@@ -69,6 +69,7 @@ router.post('/', (req, res, next) => {
     registeredAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
   };
 
+  console.log(user);
   userDao.createUser(user)
     .then(dbRes => {
       userDao.getUserById(dbRes.insertId)

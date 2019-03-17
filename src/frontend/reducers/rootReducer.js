@@ -5,4 +5,5 @@ import user, * as fromUser from './user';
 export default combineReducers({ user });
 
 export const getUserIsError = state => fromUser.getIsError(state.user);
+export const getUsername = state => fromUser.getUsername(state.user);
 

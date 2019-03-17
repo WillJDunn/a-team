@@ -11,13 +11,17 @@ const _style = {
 const LoginButton = props => (
   <Button
     style={_style.loginButton}
-    onClick={props.onClick}>
-    Login
+    onClick={props.onClick}
+    disabled={props.disabled}
+  >
+    {props.children}
   </Button>
 );
 
 LoginButton.propTypes = {
   onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 LoginButton.defaultProps = {
