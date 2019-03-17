@@ -5,7 +5,6 @@ const getUsers = () => db.query('SELECT * from teama.users;')
   .then(results => results.map(result => User.fromDB(result)));
 
 const getUser = userName => {
-  console.log(userName);
   return db.query(`SELECT *
                    from teama.users
                    WHERE user_name = ?;`, [userName])

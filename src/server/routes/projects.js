@@ -4,7 +4,8 @@ const projectDao = require('../dao/projectDao');
 
 
 router.get('/', (req, res) => {
-  console.log('in projects root get');
+  const user = req.user;
+  console.log(user);
   projectDao.getProjects()
     .then(projects => res.send(projects));
 });
