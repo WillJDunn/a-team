@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import * as PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
+import LoginButtonContainer from './login/LoginButtonContainer';
 
 const _style = {
   root: {
@@ -34,11 +33,7 @@ const HomePage = props => {
           <div style={_style.appBarContents}>
             <div style={_style.title}>A Team</div>
             <div style={_style.loginButtonContainer}>
-              <Button
-                style={_style.loginButton}
-                onClick={() => props.history.push('/login')}>
-                Login
-              </Button>
+              <LoginButtonContainer />
             </div>
           </div>
       </AppBar>
