@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const projectDao = require('../dao/projectDao');
+const boardDao = require('../dao/boardDao');
 
 
 router.get('/', (req, res) => {
