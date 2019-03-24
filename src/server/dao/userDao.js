@@ -32,7 +32,6 @@ const authenticate = (username, password) =>
     return user;
   });
 
-
 module.exports = {
   getUsers,
   getUser,
