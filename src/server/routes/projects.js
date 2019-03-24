@@ -1,21 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const projectDao = require('../dao/projectDao');
-const boardDao = require('../dao/boardDao');
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const user = req.user;
   console.log(user);
   projectDao.getProjects()
-    .then(projects => res.send(projects));
+    .then(projects => res.send(projects))
+    .catch(next);
 });
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   console.log('in projects root post');
   const { name, description } = req.body;
   projectDao.createProject({ name, description })
-    .then(dbRes => res.send(`${dbRes.insertId}`));
+    .then(dbRes => res.send(`${dbRes.insertId}`))
+    .catch(next);
 });
 
 module.exports = router;

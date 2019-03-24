@@ -15,11 +15,9 @@ const getBoardsForProject = projectId => {
 
 const createBoardForProject = (projectId, board) => {
   console.log('Creating new board in db', board);
-  const values = [
-    [board.name, board.description, projectId],
-  ];
-  const sql = 'INSERT INTO teama.boards (board_name, description, project_id) VALUES ?';
-  return db.query(sql, [values]);
+  const values = [projectId, board.name, board.description];
+  const sql = 'SET @insertId = 0; CALL add_board(?, ?, ?, @insertId); SELECT @insertId as insertId';
+  return db.query(sql, values);
 };
 
 module.exports = {
