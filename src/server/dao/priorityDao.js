@@ -3,7 +3,7 @@ const Priority = require('../dto/Priority');
 
 //api/priorities/GET: Get a list of priority objects
 const getPriorities = () => {
-    const sql = 'SELECT * FROM teama.priorities;
+    const sql = 'SELECT * FROM teama.priorities';
     return db.query(sql).then(results => results.map(result => Priority.fromDB(result)));
 };
 
