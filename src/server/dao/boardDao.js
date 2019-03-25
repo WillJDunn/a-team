@@ -14,7 +14,6 @@ const getBoardsForProject = projectId => {
 };
 
 const createBoardForProject = (projectId, board) => {
-  console.log('Creating new board in db', board);
   const values = [projectId, board.name, board.description];
   const sql = 'SET @insertId = 0; CALL add_board(?, ?, ?, @insertId); SELECT @insertId as insertId';
   return db.query(sql, values);

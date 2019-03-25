@@ -12,14 +12,11 @@ const _style = {
   },
 };
 
-const CreateProjectWidget = props => {
+const CreateBoardWidget = props => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleClose = () => {
-    setIsDialogOpen(false);
-  };
-  const handleSubmit = () => {
     props.onSubmit(name, description);
     setIsDialogOpen(false);
   };
@@ -29,44 +26,44 @@ const CreateProjectWidget = props => {
   return (
     <React.Fragment>
       <Button variant="contained" color="primary" onClick={handleDialogOpen}>
-        CREATE PROJECT
+        CREATE BOARD
       </Button>
       <Dialog open={isDialogOpen} onClose={handleClose}>
-      <div style={_style.root}>
-        <TextField
-          label="Project Name"
-          value={name}
-          onChange={evt => setName(evt.target.value)}
-        />
-        <TextField
-          label="Project Description"
-          multiline
-          rowsMax="4"
-          value={description}
-          onChange={evt => setDescription(evt.target.value)}
-        />
-        <Button
-          variant="contained"
-          fullWidth
-          disabled={!Boolean(name && description)}
-          onClick={handleSubmit}
-          color="primary"
-        >
-          SUBMIT
-        </Button>
-      </div>
+        <div style={_style.root}>
+          <TextField
+            label="Board Name"
+            value={name}
+            onChange={evt => setName(evt.target.value)}
+          />
+          <TextField
+            label="Board Description"
+            multiline
+            rowsMax="4"
+            value={description}
+            onChange={evt => setDescription(evt.target.value)}
+          />
+          <Button
+            variant="contained"
+            fullWidth
+            disabled={!Boolean(name && description)}
+            onClick={handleClose}
+            color="primary"
+          >
+            SUBMIT
+          </Button>
+        </div>
       </Dialog>
     </React.Fragment>
   );
 };
 
-CreateProjectWidget.propTypes = {
+CreateBoardWidget.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-CreateProjectWidget.defaultProps = {
+CreateBoardWidget.defaultProps = {
   onSubmit: () => {},
 };
 
-export default CreateProjectWidget;
+export default CreateBoardWidget;
 

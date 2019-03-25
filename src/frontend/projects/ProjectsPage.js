@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectsList from './ProjectsList';
 import CreateProjectWidget from './CreateProjectWidget';
+import BoardsList from '../boards/BoardsList';
+import CreateBoardWidget from '../boards/CreateBoardWidget';
 
 const _style = {
   root: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 250,
+  },
+  projects: {
     display: 'flex',
     flexDirection: 'column',
     width: 250,
@@ -41,41 +48,61 @@ const useProjects = () => {
   return [projects, createProject];
 };
 
-const useBoards = () => {
+const useBoards = projectId => {
   const [boards, setBoards] = useState([]);
-  const getBoards = projectId => {
-    fetch(`/api/${projectId}/boards`)
+  useEffect(() => {
+    if (!projectId) {
+      return;
+    }
+    fetch(`/api/projects/${projectId}/boards`)
       .then(res => res.json())
       .then(setBoards);
-  };
-  const createBoard = (projectId, name, description) => {
+  }, [projectId]);
+  const createBoard = projectId => (name, description) => {
     const opts = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(name, description),
+      body: JSON.stringify({ name, description }),
     };
-    fetch(`/api/${projectId}/boards`, opts)
+    fetch(`/api/projects/${projectId}/boards`, opts)
       .then(res => res.text())
       .then(id => setBoards([...boards, { id, name, description }]));
   };
   return [boards, createBoard];
 };
 
+// FIXME make the create project and create board buttons more intelligent.  If the user clicks
+// somewhere outside of the dialog it should just close, not submit anything
 const ProjectsPage = () => {
   const [projects, createProject] = useProjects();
-  const [boards, createBoard] = useBoards();
+  const [selectedProject, setSelectedProject] = useState(undefined);
+  const [boards, createBoard] = useBoards(selectedProject);
+  const handleClick = id => {
+    console.log(`Project id ${id} clicked on`);
+    setSelectedProject(id);
+  };
   return (
     <React.Fragment>
       <Link to="/">Back to Home</Link>
       <div>Projects Page</div>
-      <div>
-        <div style={_style.root}>
-          <ProjectsList projects={projects} />
+      <div style={_style.root}>
+        <div>
+          <div>
+            <div style={_style.projects}>
+              <ProjectsList onClick={handleClick} projects={projects} />
+            </div>
+          </div>
+          <CreateProjectWidget onSubmit={createProject} />
+        </div>
+        <div>
+          <div style={_style.boards}>
+            <BoardsList boards={boards} />
+          </div>
+          <CreateBoardWidget onSubmit={createBoard(selectedProject)} />
         </div>
       </div>
-      <CreateProjectWidget onSubmit={createProject} />
     </React.Fragment>
   );
 };

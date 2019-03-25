@@ -10,7 +10,11 @@ const ProjectsList = props => {
       <div>Projects</div>
       <List>
         {props.projects.map(project => (
-          <ListItem button key={`project_${project.id}`}>
+          <ListItem
+            button
+            key={`project_${project.id}`}
+            onClick={() => props.onClick(project.id)}
+          >
             <ListItemText primary={project.name} />
           </ListItem>
         ))}
@@ -21,6 +25,12 @@ const ProjectsList = props => {
 
 ProjectsList.propTypes = {
   projects: PropTypes.array,
+  onClick: PropTypes.func,
+};
+
+ProjectsList.defaultProps = {
+  projects: [],
+  onClick: () => {},
 };
 
 export default ProjectsList;

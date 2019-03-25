@@ -71,10 +71,30 @@ router.post('/', (req, res, next) => {
 
   userDao.createUser(user)
     .then(dbRes => {
-      userDao.getUserById(dbRes.insertId)
+      const rows = dbRes[dbRes.length - 1];
+      const userId = rows[0].userId;
+      userDao.getUserById(userId)
         .then(user => res.send(JSON.stringify(cleanUser(user))))
     })
     .catch(next);
 });
+
+// router.post('/', (req, res, next) => {
+//   const { username, email, password } = req.body;
+//   const user = {
+//     username,
+//     password,
+//     email,
+//     emailVerified: true,
+//     registeredAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+//   };
+//
+//   userDao.createUser(user)
+//     .then(dbRes => {
+//       userDao.getUserById(dbRes.insertId)
+//         .then(user => res.send(JSON.stringify(cleanUser(user))))
+//     })
+//     .catch(next);
+// });
 
 module.exports = router;

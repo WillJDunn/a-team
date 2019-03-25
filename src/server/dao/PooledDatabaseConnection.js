@@ -17,7 +17,9 @@ class PooledDatabaseConnection {
       this.pool.getConnection((err, connection) => {
         if (err) {
           // need to release the connection when done whether through error or successful completion
-          connection.release();
+          if (connection && connection.release) {
+            connection.release();
+          }
           return reject(err);
         }
         connection.query(sql, args, (err, rows) => {
