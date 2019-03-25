@@ -11,7 +11,7 @@ const usersRoutes = require('./routes/users');
 const projectsRoutes = require('./routes/projects');
 const boardsRoutes = require('./routes/boards');
 
-const SERVER_PORT = process.env.SERVER_PORT || 3001;
+const SERVER_PORT =  3001;
 
 passport.use(new LocalStrategy(
   // "username" is the default, but if our request contains a different field, we could change it here
