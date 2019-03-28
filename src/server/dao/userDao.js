@@ -16,19 +16,14 @@ const getUserById = userId =>
     .then(data => User.fromDB(data[0]));
 
 
-// const createUser = user => {
-//   const values = [
-//     [user.username, user.password, user.email, user.emailVerified, user.registeredAt]
-//   ];
-//   const sql = 'INSERT INTO teama.users (user_name, password, email, email_verified, registered_at) VALUES ?';
-//   return db.query(sql, [values]);
-// };
-
 const createUser = user => {
   const values = [user.username, user.password, user.email, user.registeredAt];
   const sql = 'SET @userId = 0; CALL add_user(?, ?, ?, ?, @userId); SELECT @userId as userId';
-  // const sql = 'INSERT INTO teama.users (user_name, password, email, email_verified, registered_at) VALUES ?';
-  return db.query(sql, values);
+  return db.query(sql, values)
+    .then(dbRes => {
+      const rows = dbRes[dbRes.length - 1];
+      return rows[0].userId;
+    });
 };
 
 const authenticate = (username, password) =>

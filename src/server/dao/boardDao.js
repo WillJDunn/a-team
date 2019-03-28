@@ -19,8 +19,7 @@ const createBoardForProject = (projectId, board) => {
   return db.query(sql, values)
     .then(dbRes => {
       const rows = dbRes[dbRes.length - 1];
-      const insertId = rows[0].insertId;
-      return insertId;
+      return rows[0].insertId;
     })
     ;
 };
