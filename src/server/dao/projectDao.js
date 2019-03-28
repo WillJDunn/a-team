@@ -12,10 +12,11 @@ const createProject = project => {
     [project.name, project.description],
   ];
   const sql = 'INSERT INTO teama.projects (project_name, description) VALUES ?';
-  return db.query(sql, [values]);
+  return db.query(sql, [values])
+  .then(dbRes => dbRes.insertId);
 };
 
 module.exports = {
   getProjects,
   createProject,
-};
+p};

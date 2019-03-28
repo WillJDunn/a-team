@@ -16,7 +16,13 @@ const getBoardsForProject = projectId => {
 const createBoardForProject = (projectId, board) => {
   const values = [projectId, board.name, board.description];
   const sql = 'SET @insertId = 0; CALL add_board(?, ?, ?, @insertId); SELECT @insertId as insertId';
-  return db.query(sql, values);
+  return db.query(sql, values)
+    .then(dbRes => {
+      const rows = dbRes[dbRes.length - 1];
+      const insertId = rows[0].insertId;
+      return insertId;
+    })
+    ;
 };
 
 module.exports = {

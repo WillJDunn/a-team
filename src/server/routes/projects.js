@@ -15,7 +15,6 @@ router.post('/', (req, res, next) => {
   console.log('in projects root post');
   const { name, description } = req.body;
   projectDao.createProject({ name, description })
-    .then(dbRes => res.send(`${dbRes.insertId}`))
     .catch(next);
 });
 

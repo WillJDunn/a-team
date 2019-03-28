@@ -17,12 +17,7 @@ router.post('/:projectId/boards', (req, res, next) => {
   const { name, description } = req.body;
   console.log(`Creating board on project id=${projectId}`);
   boardDao.createBoardForProject(projectId, { name, description })
-    .then(dbRes => {
-      console.log(dbRes);
-      const rows = dbRes[dbRes.length - 1];
-      const insertId = rows[0].insertId;
-      res.send(`${insertId}`);
-    })
+    .then(insertId => res.send(`${insertId}`))
     .catch(next);
 });
 
