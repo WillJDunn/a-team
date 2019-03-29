@@ -744,7 +744,8 @@ CREATE OR REPLACE VIEW `v_issues` AS
         created_users.user_name AS created_by_name,
         items.assigned_to,
         assigned_users.user_name AS assigned_to_name,
-        items.labels
+        items.labels,
+        items.created_at
     FROM
         items
             INNER JOIN
