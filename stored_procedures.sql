@@ -1,7 +1,3 @@
--- -----------------------------------------------------
--- procedure add_user
--- -----------------------------------------------------
-
 USE `teama`;
 DROP procedure IF EXISTS `teama`.`add_user`;
 
@@ -34,11 +30,10 @@ CREATE PROCEDURE `add_project_user` (
   IN in_user_id INT,
   IN in_is_admin TINYINT,
   IN in_added_by INT,
-  IN in_added_at DATETIME,
   OUT out_id INT)
 BEGIN
 INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at)
-  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, in_added_at);
+  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -108,11 +103,10 @@ CREATE PROCEDURE `add_board_user` (
   IN in_user_id INT,
   IN in_is_admin TINYINT,
   IN in_added_by INT,
-  IN in_added_at DATETIME,
   OUT out_id INT)
 BEGIN
 INSERT INTO board_users (project_id, user_id, is_admin, added_by, added_at)
-  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, in_added_at);
+  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -181,12 +175,11 @@ USE `teama`$$
 CREATE PROCEDURE `add_comment` (
   IN in_item_id INT,
   IN in_user_id INT,
-  IN in_created_at DATETIME,
   IN in_comment TINYTEXT,
   OUT out_id INT)
 BEGIN
 INSERT INTO comments (item_id, user_id, created_at, comment)
-  VALUES (in_item_id, in_user_id, in_created_at, in_comment);
+  VALUES (in_item_id, in_user_id, NOW(), in_comment);
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -254,7 +247,7 @@ DELIMITER $$
 USE `teama`$$
 -- Important: this does not actually remove the user from the users table!
 --   Instead, we set the 'deactivated' field = true, set the password field to
--- 	 null, and remove them from the project_users and board_users tables.
+--   null, and remove them from the project_users and board_users tables.
 --   We do this instead of actually deleting it from the users table because
 --   there are rows referencing this value in tables like `items` and `comments` tables,
 --   which we want to persist. This still prevents the user from being able to
