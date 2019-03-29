@@ -1,4 +1,4 @@
--- Updated Thu 28 Mar 2019 09:30:35 PM PDT
+-- Thu 28 Mar 2019 09:54:40 PM PDT
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -342,11 +342,10 @@ CREATE PROCEDURE `add_project_user` (
   IN in_user_id INT,
   IN in_is_admin TINYINT,
   IN in_added_by INT,
-  IN in_added_at DATETIME,
   OUT out_id INT)
 BEGIN
 INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at)
-  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, in_added_at);
+  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -416,11 +415,10 @@ CREATE PROCEDURE `add_board_user` (
   IN in_user_id INT,
   IN in_is_admin TINYINT,
   IN in_added_by INT,
-  IN in_added_at DATETIME,
   OUT out_id INT)
 BEGIN
 INSERT INTO board_users (project_id, user_id, is_admin, added_by, added_at)
-  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, in_added_at);
+  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -489,12 +487,11 @@ USE `teama`$$
 CREATE PROCEDURE `add_comment` (
   IN in_item_id INT,
   IN in_user_id INT,
-  IN in_created_at DATETIME,
   IN in_comment TINYTEXT,
   OUT out_id INT)
 BEGIN
 INSERT INTO comments (item_id, user_id, created_at, comment)
-  VALUES (in_item_id, in_user_id, in_created_at, in_comment);
+  VALUES (in_item_id, in_user_id, NOW(), in_comment);
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
