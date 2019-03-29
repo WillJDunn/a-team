@@ -1,3 +1,4 @@
+-- Note: also included in teama_schema.sql
 USE `teama`;
 DROP procedure IF EXISTS `teama`.`add_user`;
 
