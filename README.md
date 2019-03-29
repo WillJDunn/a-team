@@ -204,3 +204,5 @@ For queries use SELECT statements. For INSERTS and DELETES use the procedures de
 
 `CALL delete_comment (${comment_id})
 ```
+
+SQL for inserting sample data is maintained with this Google doc: https://docs.google.com/spreadsheets/d/1OoYSdDnV2SZvPscjIzZSVcfawIb_xjYi5DOU9pmlSLI/edit?usp=sharing
