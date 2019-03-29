@@ -417,8 +417,8 @@ CREATE PROCEDURE `add_board_user` (
   IN in_added_by INT,
   OUT out_id INT)
 BEGIN
-INSERT INTO board_users (project_id, user_id, is_admin, added_by, added_at)
-  VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at)
+  VALUES (in_board_id, in_user_id, in_is_admin, in_added_by, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
