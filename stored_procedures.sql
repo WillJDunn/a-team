@@ -1,4 +1,8 @@
 -- Note: also included in teama_schema.sql
+-- -----------------------------------------------------
+-- procedure add_user
+-- -----------------------------------------------------
+
 USE `teama`;
 DROP procedure IF EXISTS `teama`.`add_user`;
 
@@ -210,8 +214,8 @@ CREATE PROCEDURE `add_item` (
   IN in_labels VARCHAR(255),
   OUT out_id INT)
 BEGIN
-INSERT INTO items (project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels)
-  VALUES (in_project_id, in_board_id, in_status_id, in_priority_id, in_is_issue, in_item_name, in_description, in_due_date, in_time_estimate, in_created_by, in_assigned_to, in_labels);
+INSERT INTO items (project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at)
+  VALUES (in_project_id, in_board_id, in_status_id, in_priority_id, in_is_issue, in_item_name, in_description, in_due_date, in_time_estimate, in_created_by, in_assigned_to, in_labels, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -248,7 +252,7 @@ DELIMITER $$
 USE `teama`$$
 -- Important: this does not actually remove the user from the users table!
 --   Instead, we set the 'deactivated' field = true, set the password field to
---   null, and remove them from the project_users and board_users tables.
+-- 	 null, and remove them from the project_users and board_users tables.
 --   We do this instead of actually deleting it from the users table because
 --   there are rows referencing this value in tables like `items` and `comments` tables,
 --   which we want to persist. This still prevents the user from being able to
