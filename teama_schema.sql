@@ -433,8 +433,8 @@ DROP procedure IF EXISTS `teama`.`add_board`;
 
 DELIMITER $$
 USE `teama`$$
--- Note: when adding a project you should also execute add_board_user with the returned out_id
--- as board_id, the user_id of the user that created the project, and is_admin = True (1)
+-- Note: when adding a board you should also execute add_board_user with the returned out_id
+-- as board_id, the user_id of the user that created the board, and is_admin = True (1)
 -- Also inserts into table statuses. The inserted rows include each row from the default_statuses
 -- table along with the board_id created in this procedure
 CREATE PROCEDURE `add_board` (
