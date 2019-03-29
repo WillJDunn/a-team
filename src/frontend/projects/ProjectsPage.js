@@ -86,14 +86,11 @@ const ProjectsPage = () => {
   return (
     <React.Fragment>
       <Link to="/">Back to Home</Link>
-      <div>Projects Page</div>
       <div style={_style.root}>
         <div>
-          <div>
             <div style={_style.projects}>
               <ProjectsList onClick={handleClick} projects={projects} />
             </div>
-          </div>
           <CreateProjectWidget onSubmit={createProject} />
         </div>
         <div>
