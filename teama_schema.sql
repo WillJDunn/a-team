@@ -1,4 +1,4 @@
--- Thu 28 Mar 2019 09:54:40 PM PDT
+-- Updated Fri 29 Mar 2019 02:09:30 PM PDT
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -197,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `teama`.`items` (
   `created_by` INT NOT NULL,
   `assigned_to` INT NULL,
   `labels` VARCHAR(255) NULL,
+  `created_at` DATETIME NULL DEFAULT NOW(),
   PRIMARY KEY (`item_id`),
   INDEX `fk_board_id_idx` (`board_id` ASC),
   INDEX `fk_priority_id_idx` (`priority_id` ASC),
@@ -294,7 +295,7 @@ USE `teama` ;
 -- -----------------------------------------------------
 -- Placeholder table for view `teama`.`v_items`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `teama`.`v_items` (`item_id` INT, `project_id` INT, `project_name` INT, `board_id` INT, `board_name` INT, `status_id` INT, `status_name` INT, `priority_id` INT, `priority_name` INT, `is_issue` INT, `item_name` INT, `description` INT, `due_date` INT, `time_estimate` INT, `created_by` INT, `created_by_name` INT, `assigned_to` INT, `assigned_to_name` INT, `labels` INT);
+CREATE TABLE IF NOT EXISTS `teama`.`v_items` (`item_id` INT, `project_id` INT, `project_name` INT, `board_id` INT, `board_name` INT, `status_id` INT, `status_name` INT, `priority_id` INT, `priority_name` INT, `is_issue` INT, `item_name` INT, `description` INT, `due_date` INT, `time_estimate` INT, `created_by` INT, `created_by_name` INT, `assigned_to` INT, `assigned_to_name` INT, `labels` INT, `created_at` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `teama`.`v_issues`
@@ -521,8 +522,8 @@ CREATE PROCEDURE `add_item` (
   IN in_labels VARCHAR(255),
   OUT out_id INT)
 BEGIN
-INSERT INTO items (project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels)
-  VALUES (in_project_id, in_board_id, in_status_id, in_priority_id, in_is_issue, in_item_name, in_description, in_due_date, in_time_estimate, in_created_by, in_assigned_to, in_labels);
+INSERT INTO items (project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at)
+  VALUES (in_project_id, in_board_id, in_status_id, in_priority_id, in_is_issue, in_item_name, in_description, in_due_date, in_time_estimate, in_created_by, in_assigned_to, in_labels, NOW());
 SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
@@ -699,7 +700,8 @@ CREATE OR REPLACE VIEW `v_items` AS
         created_users.user_name AS created_by_name,
         items.assigned_to,
         assigned_users.user_name AS assigned_to_name,
-        items.labels
+        items.labels,
+        items.created_at
     FROM
         items
             INNER JOIN
