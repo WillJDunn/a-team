@@ -37,7 +37,6 @@ const user = (state = initialState, action) => {
     case actionTypes.CREATE_USER_SUCCEEDED:
       return state.set('createError', undefined);
     case actionTypes.CREATE_USER_FAILED:
-      console.log(action.payload);
       return state.set('createError', action.payload.error);
     default:
       return state;

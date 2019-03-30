@@ -34,17 +34,18 @@ const useProjects = () => {
       },
       body: JSON.stringify({ name, description }),
     };
+    console.log('sending new project');
     fetch('/api/projects', options)
       .then(response => {
+        console.log(response);
         if (response.status / 100 !== 2) {
-          console.log('Create project failed!');
-        } else {
-          console.log('Create project succeeded!');
+          throw new Error('Create project failed!')
         }
         return response;
       })
       .then(res => res.text())
-      .then(id => setProjects([...projects, { id, name, description }]));
+      .then(id => setProjects([...projects, { id, name, description }]))
+      .catch(console.error);
   };
   return [projects, createProject];
 };
@@ -68,14 +69,25 @@ const useBoards = projectId => {
       body: JSON.stringify({ name, description }),
     };
     fetch(`/api/projects/${projectId}/boards`, opts)
-      .then(res => res.text())
-      .then(id => setBoards([...boards, { id, name, description }]));
+      .then(res => {
+        if (res.status / 100 !== 2) {
+          throw new Error('Create new board failed!');
+        }
+        return res.text();
+      })
+      .then(id => setBoards([...boards, { id, name, description }]))
+      .catch(console.error);
   };
   return [boards, createBoard];
 };
 
-// FIXME make the create project and create board buttons more intelligent.  If the user clicks
-// somewhere outside of the dialog it should just close, not submit anything
+const getProjectNameFromId = (projects, id) => {
+  if (!projects || projects.length === 0 || !id) {
+    return '';
+  }
+  return projects.find(p => p.id === id).name;
+};
+
 const ProjectsPage = props => {
   const [projects, createProject] = useProjects();
   const [selectedProject, setSelectedProject] = useState(undefined);
@@ -102,7 +114,11 @@ const ProjectsPage = props => {
             <div style={_style.list}>
               <BoardsList boards={boards} />
             </div>
-          <CreateBoardWidget onSubmit={createBoard(selectedProject)} />
+          <CreateBoardWidget
+            onSubmit={createBoard(selectedProject)}
+            projectName={getProjectNameFromId(projects, selectedProject)}
+            disabled={selectedProject === undefined}
+          />
           </Column>
         </Paper>
       </Row>

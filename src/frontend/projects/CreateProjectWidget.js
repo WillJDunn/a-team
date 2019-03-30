@@ -5,10 +5,16 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 
 const _style = {
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: 250,
+  form: {
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: 250,
+    },
+    title: {
+      marginTop: 12,
+      textAlign: 'center',
+    },
   },
 };
 
@@ -21,6 +27,8 @@ const CreateProjectWidget = props => {
   };
   const handleSubmit = () => {
     props.onSubmit(name, description);
+    setName('');
+    setDescription('');
     setIsDialogOpen(false);
   };
   const handleDialogOpen = () => {
@@ -32,11 +40,13 @@ const CreateProjectWidget = props => {
         CREATE PROJECT
       </Button>
       <Dialog open={isDialogOpen} onClose={handleClose}>
-      <div style={_style.root}>
+      <div style={_style.form.root}>
+        <strong style={_style.form.title}>Create Project</strong>
         <TextField
           label="Project Name"
           value={name}
           onChange={evt => setName(evt.target.value)}
+          style={{margin: 12}}
         />
         <TextField
           label="Project Description"
@@ -44,6 +54,7 @@ const CreateProjectWidget = props => {
           rowsMax="4"
           value={description}
           onChange={evt => setDescription(evt.target.value)}
+          style={{margin: 12}}
         />
         <Button
           variant="contained"
@@ -51,6 +62,7 @@ const CreateProjectWidget = props => {
           disabled={!Boolean(name && description)}
           onClick={handleSubmit}
           color="primary"
+          style={{padding: 12}}
         >
           SUBMIT
         </Button>

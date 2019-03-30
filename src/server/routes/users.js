@@ -2,12 +2,6 @@ const express = require('express');
 const router = express.Router();
 const userDao = require('../dao/userDao');
 
-const cleanUser = user => {
-  const outputUser = { ...user };
-  delete outputUser.password;
-  return outputUser;
-};
-
 /**
  * @api {get} /api/users Request a list of users
  * @apiName GetUsers
@@ -17,10 +11,7 @@ const cleanUser = user => {
  */
 router.get('/', (req, res, next) => {
   userDao.getUsers()
-    .then(users => {
-      const cleanedUsers = users.map(user => cleanUser(user));
-      res.send(JSON.stringify(cleanedUsers));
-    })
+    .then(users => res.send(JSON.stringify(users)))
     .catch(next);
 });
 
@@ -35,9 +26,7 @@ router.get('/', (req, res, next) => {
  */
 router.get('/:userId', (req, res, next) => {
   userDao.getUserById(req.params.userId)
-    .then(user => {
-      res.send(JSON.stringify(cleanUser(user)));
-    })
+    .then(user => res.send(JSON.stringify(user)))
     .catch(next);
 });
 
@@ -72,7 +61,7 @@ router.post('/', (req, res, next) => {
   userDao.createUser(user)
     .then(userId => {
       userDao.getUserById(userId)
-        .then(user => res.send(JSON.stringify(cleanUser(user))))
+        .then(user => res.send(JSON.stringify(user)))
     })
     .catch(next);
 });
