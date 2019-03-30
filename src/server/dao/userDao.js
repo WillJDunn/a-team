@@ -17,7 +17,7 @@ const getUserById = userId =>
 
 
 const createUser = user => {
-  const values = [user.username, user.password, user.email, user.registeredAt];
+  const values = [user.username, user.password, user.email];
   const sql = 'SET @userId = 0; CALL add_user(?, ?, ?, ?, @userId); SELECT @userId as userId';
   return db.query(sql, values)
     .then(dbRes => {

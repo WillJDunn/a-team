@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'redux-starter-kit';
 import { connect } from 'react-redux';
 import LoginWidget from './LoginWidget';
-import { loginSuccessful, loginFailed  } from '../reducers/user';
+import { loginSucceeded, loginFailed  } from '../reducers/user';
 import * as selectors from '../reducers/rootReducer';
 import { withRouter } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ export const login = (username, password, history) => dispatch  => {
       return response;
     })
     .then(response => response.json())
-    .then(user => dispatch(loginSuccessful(user)))
+    .then(user => dispatch(loginSucceeded(user)))
     .then(() => {
       history.push('/');
     })
