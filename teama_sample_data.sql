@@ -3,6 +3,12 @@
 --
 -- This script is manually updated periodically based on the SQL contained in
 --   https://docs.google.com/spreadsheets/d/1OoYSdDnV2SZvPscjIzZSVcfawIb_xjYi5DOU9pmlSLI/edit?usp=sharing
+--
+-- It's basically got everything we need for managing our own project:
+--   users table has IDs for each of us with password "foo"
+--   There is a project called Team A. This project has a board called Development
+--   Board Development has items for each of our user stories (as we listed in our previous project presentation)
+--   There's also a bit of other data not for our project just test stuff
 DELETE FROM comments;
 DELETE FROM items;
 DELETE FROM statuses;
