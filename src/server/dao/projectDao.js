@@ -19,4 +19,4 @@ const createProject = project => {
 module.exports = {
   getProjects,
   createProject,
-p};
+};

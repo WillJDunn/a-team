@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import ProjectsList from './ProjectsList';
 import CreateProjectWidget from './CreateProjectWidget';
 import BoardsList from '../boards/BoardsList';
 import CreateBoardWidget from '../boards/CreateBoardWidget';
+import Button from '@material-ui/core/Button';
+import Row from '../common/Row';
+import Column from '../common/Column';
+import Paper from '@material-ui/core/Paper';
 
 const _style = {
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
+  column: {
+    padding: 12,
     width: 250,
   },
-  projects: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: 250,
+  list: {
+    height: 500,
+    overflowY: 'auto',
   },
 };
 
@@ -75,31 +76,36 @@ const useBoards = projectId => {
 
 // FIXME make the create project and create board buttons more intelligent.  If the user clicks
 // somewhere outside of the dialog it should just close, not submit anything
-const ProjectsPage = () => {
+const ProjectsPage = props => {
   const [projects, createProject] = useProjects();
   const [selectedProject, setSelectedProject] = useState(undefined);
   const [boards, createBoard] = useBoards(selectedProject);
   const handleClick = id => {
-    console.log(`Project id ${id} clicked on`);
     setSelectedProject(id);
   };
   return (
     <React.Fragment>
-      <Link to="/">Back to Home</Link>
-      <div style={_style.root}>
-        <div>
-            <div style={_style.projects}>
-              <ProjectsList onClick={handleClick} projects={projects} />
+      <Button onClick={() => props.history.push('/')}>
+        Back to Home
+      </Button>
+      <Row>
+        <Paper>
+            <Column style={_style.column}>
+              <div style={_style.list}>
+                <ProjectsList onClick={handleClick} projects={projects} />
+              </div>
+              <CreateProjectWidget onSubmit={createProject} />
+            </Column>
+        </Paper>
+        <Paper>
+          <Column style={_style.column}>
+            <div style={_style.list}>
+              <BoardsList boards={boards} />
             </div>
-          <CreateProjectWidget onSubmit={createProject} />
-        </div>
-        <div>
-          <div style={_style.boards}>
-            <BoardsList boards={boards} />
-          </div>
           <CreateBoardWidget onSubmit={createBoard(selectedProject)} />
-        </div>
-      </div>
+          </Column>
+        </Paper>
+      </Row>
     </React.Fragment>
   );
 };

@@ -37,9 +37,11 @@ const HomePage = props => {
             </div>
           </div>
       </AppBar>
-      <Button onClick={() => props.history.push('/projects')}>
-        Projects
-      </Button>
+      {props.location.pathname !== '/projects' && (
+        <Button onClick={() => props.history.push('/projects')}>
+          Projects
+        </Button>
+      )}
     </React.Fragment>
   );
 };

@@ -16,8 +16,11 @@ const CreateBoardWidget = props => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const handleClose = () => {
+  const handleSubmit = () => {
     props.onSubmit(name, description);
+    setIsDialogOpen(false);
+  };
+  const handleClose = () => {
     setIsDialogOpen(false);
   };
   const handleDialogOpen = () => {
@@ -25,7 +28,11 @@ const CreateBoardWidget = props => {
   };
   return (
     <React.Fragment>
-      <Button variant="contained" color="primary" onClick={handleDialogOpen}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleDialogOpen}
+      >
         CREATE BOARD
       </Button>
       <Dialog open={isDialogOpen} onClose={handleClose}>
@@ -46,7 +53,7 @@ const CreateBoardWidget = props => {
             variant="contained"
             fullWidth
             disabled={!Boolean(name && description)}
-            onClick={handleClose}
+            onClick={handleSubmit}
             color="primary"
           >
             SUBMIT
