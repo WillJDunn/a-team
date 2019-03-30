@@ -1,3 +1,8 @@
+-- IMPORTANT: all existing data for these tables will be DELETED. This is required because
+--   these explicitly state ID column values which might otherwise be in use
+--
+-- This script is manually updated periodically based on the SQL contained in
+--   https://docs.google.com/spreadsheets/d/1OoYSdDnV2SZvPscjIzZSVcfawIb_xjYi5DOU9pmlSLI/edit?usp=sharing
 DELETE FROM comments;
 DELETE FROM items;
 DELETE FROM statuses;
