@@ -1,3 +1,4 @@
+-- Updated Sat 30 Mar 2019 01:32:15 PM PDT
 -- Note: also included in teama_schema.sql
 -- -----------------------------------------------------
 -- procedure add_user
