@@ -1,3 +1,4 @@
+-- Updated Sat 30 Mar 2019 01:32:15 PM PDT
 -- IMPORTANT: all existing data for these tables will be DELETED. This is required because
 --   these explicitly state ID column values which might otherwise be in use
 --
