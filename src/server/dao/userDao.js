@@ -25,9 +25,8 @@ const getUserById = userId =>
 // };
 
 const createUser = user => {
-  const values = [user.username, user.password, user.email, user.registeredAt];
+  const values = [user.username, user.password, user.email];
   const sql = 'SET @userId = 0; CALL add_user(?, ?, ?, ?, @userId); SELECT @userId as userId';
-  // const sql = 'INSERT INTO teama.users (user_name, password, email, email_verified, registered_at) VALUES ?';
   return db.query(sql, values);
 };
 
