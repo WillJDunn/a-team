@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
+import AppBar from '@material-ui/core/AppBar/index';
+import LoginButtonContainer from '../login/LoginButtonContainer';
+import NavigationButtonContainer from './NavigationButtonContainer';
 import Button from '@material-ui/core/Button';
-import LoginButtonContainer from './login/LoginButtonContainer';
 
 const _style = {
   root: {
@@ -30,18 +31,15 @@ const HomePage = props => {
   return (
     <React.Fragment>
       <AppBar position="static">
-          <div style={_style.appBarContents}>
-            <div style={_style.title}>A Team</div>
-            <div style={_style.loginButtonContainer}>
-              <LoginButtonContainer />
-            </div>
+        <div style={_style.appBarContents}>
+          <div style={_style.title}>
+            <NavigationButtonContainer />
           </div>
+          <div style={_style.loginButtonContainer}>
+            <LoginButtonContainer />
+          </div>
+        </div>
       </AppBar>
-      {props.location.pathname !== '/projects' && (
-        <Button onClick={() => props.history.push('/projects')}>
-          Projects
-        </Button>
-      )}
     </React.Fragment>
   );
 };
