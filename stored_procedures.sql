@@ -37,12 +37,10 @@ CREATE PROCEDURE `add_project_user` (
   IN in_project_id INT,
   IN in_user_id INT,
   IN in_is_admin TINYINT,
-  IN in_added_by INT,
-  OUT out_id INT)
+  IN in_added_by INT)
 BEGIN
 INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at)
   VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
-SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
 DELIMITER ;
@@ -111,12 +109,10 @@ CREATE PROCEDURE `add_board_user` (
   IN in_board_id INT,
   IN in_user_id INT,
   IN in_is_admin TINYINT,
-  IN in_added_by INT,
-  OUT out_id INT)
+  IN in_added_by INT)
 BEGIN
 INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at)
   VALUES (in_board_id, in_user_id, in_is_admin, in_added_by, NOW());
-SELECT LAST_INSERT_ID() INTO @out_id;
 END$$
 
 DELIMITER ;
