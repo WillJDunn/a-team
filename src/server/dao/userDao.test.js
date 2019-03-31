@@ -33,20 +33,20 @@ mysql.createPool = () => ({
 describe('userDao', () => {
   it('Retrieves a list of users', () => {
     return userDao.getUsers()
-      .then(results => {
-        expect(results.length).toBe(1);
-        expect(results[0]).toEqual(mockUser);
-        expect(mocks.release).toHaveBeenCalledTimes(1);
-      });
+        .then(results => {
+          expect(results.length).toBe(1);
+          expect(results[0]).toEqual(mockUser);
+          expect(mocks.release).toHaveBeenCalledTimes(1);
+        });
   });
 
   it('Retrieves a single user', () => {
     return userDao.getUser('testUser')
-      .then(results => {
-        expect(results.length).toBe(1);
-        expect(results[0]).toEqual(mockUser);
-        expect(mocks.release).toHaveBeenCalledTimes(1);
-      });
+        .then(results => {
+          expect(results.length).toBe(1);
+          expect(results[0]).toEqual(mockUser);
+          expect(mocks.release).toHaveBeenCalledTimes(1);
+        });
   });
 });
 

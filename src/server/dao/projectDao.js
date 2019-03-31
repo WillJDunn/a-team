@@ -26,4 +26,5 @@ const getProjectById = projectId => {
 module.exports = {
   getProjects,
   createProject,
+  getProjectById
 };
