@@ -10,7 +10,7 @@ const BoardsList = props => {
       <div>Boards</div>
       <List>
         {props.boards.map(board => (
-          <ListItem button key={`board_${board.id}`}>
+          <ListItem button key={`board_${board.id}`} onClick={() => props.onClick(board.id)}>
             <ListItemText primary={board.name} />
           </ListItem>
         ))}
@@ -21,6 +21,7 @@ const BoardsList = props => {
 
 BoardsList.propTypes = {
   boards: PropTypes.array,
+  onClick: PropTypes.func,
 };
 
 export default BoardsList;

@@ -12,17 +12,21 @@ router.get('/:projectId/boards', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/:projectId/boards/:boardId', (req, res, next) => {
+  const user = req.user;
+  const { projectId, boardId } = req.params;
+  console.log(`Getting board id=${boardId} for project id=${projectId}`);
+  boardDao.getBoardById(projectId, boardId)
+    .then(board => res.send(board))
+    .catch(next);
+});
+
 router.post('/:projectId/boards', (req, res, next) => {
   const { projectId } = req.params;
   const { name, description } = req.body;
   console.log(`Creating board on project id=${projectId}`);
   boardDao.createBoardForProject(projectId, { name, description })
-    .then(dbRes => {
-      console.log(dbRes);
-      const rows = dbRes[dbRes.length - 1];
-      const insertId = rows[0].insertId;
-      res.send(`${insertId}`);
-    })
+    .then(insertId => res.send(`${insertId}`))
     .catch(next);
 });
 
