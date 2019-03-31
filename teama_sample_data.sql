@@ -130,5 +130,7 @@ INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_iss
 INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (27, 1, 1, 3, 3, FALSE, 'Story 24', 'As a boards user, I would like to be able to make time entries showing how much time I have spent working on an item', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
 INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (28, 1, 1, 3, 3, FALSE, 'Story 25', 'As a chat room user, I would like to be able to attach files to a message so that I can have multimedia conversations with other chat room users.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
 INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (29, 1, 1, 3, 3, FALSE, 'Story 26', 'As a chat room user, I would like to be able to use emoticons in the chatroom so that I have more options to express my emotions in messages to colleagues.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
-CALL add_comment(1, 1, 'Test comment 1', @out);
-CALL add_comment(1, 1, 'Test comment 2', @out);
+CALL add_comment(1, 1, 'Test comment 1 (item 1, user 1)');
+CALL add_comment(1, 2, 'Test comment 2 (item 1, user 2)');
+CALL add_comment(1, 1, 'Test comment 3 (item 1, user 1)');
+CALL add_comment(1, 3, 'Test comment 4 (item 1, user 3)');
