@@ -1,5 +1,6 @@
--- Updated Sun 31 Mar 2019 04:10:22 PM PDT
+-- Sun 31 Mar 2019 04:28:25 PM PDT
 -- Note: also included in teama_schema.sql
+
 
 -- -----------------------------------------------------
 -- procedure add_user
@@ -41,7 +42,7 @@ CREATE PROCEDURE `add_project_user` (
 BEGIN
 INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at)
   VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
-SELECT in_project_id, in_user_id;
+SELECT in_project_id AS project_id, in_user_id AS user_id;
 END$$
 
 DELIMITER ;
@@ -114,7 +115,7 @@ CREATE PROCEDURE `add_board_user` (
 BEGIN
 INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at)
   VALUES (in_board_id, in_user_id, in_is_admin, in_added_by, NOW());
-SELECT in_board_id, in_user_id;
+SELECT in_board_id AS board_id, in_user_id AS user_id;
 END$$
 
 DELIMITER ;
