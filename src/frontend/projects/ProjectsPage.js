@@ -34,7 +34,6 @@ const useProjects = () => {
       },
       body: JSON.stringify({ name, description }),
     };
-    console.log('sending new project');
     fetch('/api/projects', options)
       .then(response => {
         console.log(response);
@@ -92,9 +91,11 @@ const ProjectsPage = props => {
   const [projects, createProject] = useProjects();
   const [selectedProject, setSelectedProject] = useState(undefined);
   const [boards, createBoard] = useBoards(selectedProject);
-  const handleClick = id => {
+  const handleProjectClick = id => {
     setSelectedProject(id);
   };
+  const handleBoardClick = projectId => boardId =>
+    props.history.push(`/projects/${projectId}/boards/${boardId}`);
   return (
     <React.Fragment>
       <Button onClick={() => props.history.push('/')}>
@@ -104,7 +105,7 @@ const ProjectsPage = props => {
         <Paper>
             <Column style={_style.column}>
               <div style={_style.list}>
-                <ProjectsList onClick={handleClick} projects={projects} />
+                <ProjectsList onClick={handleProjectClick} projects={projects} />
               </div>
               <CreateProjectWidget onSubmit={createProject} />
             </Column>
@@ -112,7 +113,7 @@ const ProjectsPage = props => {
         <Paper>
           <Column style={_style.column}>
             <div style={_style.list}>
-              <BoardsList boards={boards} />
+              <BoardsList boards={boards} onClick={handleBoardClick(selectedProject)}/>
             </div>
           <CreateBoardWidget
             onSubmit={createBoard(selectedProject)}

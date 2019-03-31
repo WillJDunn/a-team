@@ -13,6 +13,12 @@ const getBoardsForProject = projectId => {
     .then(results => results.map(result => Board.fromDB(result)));
 };
 
+const getBoardById = (projectId, boardId) => {
+  const sql = 'SELECT * FROM teama.boards WHERE project_id = ? AND board_id = ?';
+  return db.query(sql, [projectId, boardId])
+    .then(results => results.map(result => Board.fromDB(result))[0]);
+};
+
 const createBoardForProject = (projectId, board) => {
   const values = [projectId, board.name, board.description];
   const sql = 'SET @insertId = 0; CALL add_board(?, ?, ?, @insertId); SELECT @insertId as insertId';
@@ -26,6 +32,7 @@ const createBoardForProject = (projectId, board) => {
 
 module.exports = {
   getBoards,
+  getBoardById,
   getBoardsForProject,
   createBoardForProject,
 };

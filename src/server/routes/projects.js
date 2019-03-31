@@ -13,6 +13,17 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/:projectId', (req, res, next) => {
+  const { projectId } = req.params;
+  const user = req.user;
+  if (user) {
+    console.log(`User ${user.username} is authenticated`);
+  }
+  projectDao.getProjectById(projectId)
+    .then(project => res.send(project))
+    .catch(next);
+});
+
 router.post('/', (req, res, next) => {
   console.log('in projects root post');
   const { name, description } = req.body;

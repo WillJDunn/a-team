@@ -6,6 +6,12 @@ const getProjects = () => {
   return db.query(sql).then(results => results.map(result => Project.fromDB(result)));
 };
 
+const getProjectById = projectId => {
+  const sql = 'SELECT * FROM teama.projects WHERE project_id = ?';
+  return db.query(sql, [projectId])
+    .then(results => results.map(result => Project.fromDB(result))[0]);
+};
+
 const createProject = project => {
   console.log('Creating new project in db', project);
   const values = [
@@ -18,5 +24,6 @@ const createProject = project => {
 
 module.exports = {
   getProjects,
+  getProjectById,
   createProject,
 };

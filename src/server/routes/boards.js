@@ -12,6 +12,15 @@ router.get('/:projectId/boards', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/:projectId/boards/:boardId', (req, res, next) => {
+  const user = req.user;
+  const { projectId, boardId } = req.params;
+  console.log(`Getting board id=${boardId} for project id=${projectId}`);
+  boardDao.getBoardById(projectId, boardId)
+    .then(board => res.send(board))
+    .catch(next);
+});
+
 router.post('/:projectId/boards', (req, res, next) => {
   const { projectId } = req.params;
   const { name, description } = req.body;
