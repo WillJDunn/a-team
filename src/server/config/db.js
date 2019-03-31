@@ -4,7 +4,8 @@ const config = {
   user     : 'teama',
   password : 'team1_teamA',
   database : 'teama',
-  connectionLimit: 10 // default
+  connectionLimit: 10, // default
+  multipleStatements: true,
 };
 
 module.exports = config;
