@@ -1,5 +1,8 @@
 const db = require('./PooledDatabaseConnection');
 const Board = require('../dto/Board');
+const StatusForBoard = require('../dto/StatusForBoard');
+const Item = require('../dto/Item');
+
 
 const getBoards = () => {
   const sql = 'SELECT * FROM teama.boards';
@@ -30,9 +33,24 @@ const createBoardForProject = (projectId, board) => {
     ;
 };
 
+const getStatusesForBoard = boardId => {
+  const sql = 'SELECT * FROM teama.statuses WHERE board_id = ?';
+  return db.query(sql, [boardId])
+    .then(results => results.map(result => StatusForBoard.fromDB(result)));
+};
+
+const getItemsForBoard = (projectId, boardId) => {
+  console.log(projectId, boardId);
+  const sql = 'SELECT * FROM teama.v_items WHERE project_id = ? AND board_id = ?';
+  return db.query(sql, [projectId, boardId])
+    .then(results => results.map(result => Item.fromDB(result)));
+};
+
 module.exports = {
   getBoards,
   getBoardById,
   getBoardsForProject,
   createBoardForProject,
+  getStatusesForBoard,
+  getItemsForBoard,
 };

@@ -6,9 +6,9 @@ import NavigationButton from './NavigationButton';
 
 const NavigationButtonContainer = props => {
   const pathname = props.location.pathname;
-  const isHomePage = pathname !== '/projects';
-  const projectsPattern = new RegExp('/projects/\\d+$');
-  const isProjects = projectsPattern.test(pathname);
+  // const isHomePage = pathname !== '/projects';
+  // const projectsPattern = new RegExp('/projects/\\d+$');
+  // const isProjects = projectsPattern.test(pathname);
   const boardPattern = new RegExp('/projects/(\\d+)/boards/(\\d+)');
   const isBoard = boardPattern.test(pathname);
   let projectId = undefined;

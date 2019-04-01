@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 const _style = {
-  loginButton: {
+  text: {
     color: 'white',
   },
 };
@@ -13,8 +13,8 @@ const NavigationButton = props => {
   const components = [
     <Button
       key="homeButton"
-      style={_style.loginButton}
-      onClick={() => props.history.push('/')}
+      style={_style.text}
+      onClick={() => history.push('/')}
     >
       A Team
     </Button>
@@ -23,8 +23,8 @@ const NavigationButton = props => {
   components.push(
     <Button
       key="projectButton"
-      style={_style.loginButton}
-      onClick={() => props.history.push('/projects')}
+      style={_style.text}
+      onClick={() => history.push('/projects')}
     >
       Projects
     </Button>
@@ -35,7 +35,7 @@ const NavigationButton = props => {
       <Button
         key='projectNameButton'
         disabled
-        style={{ color: 'white' }}
+        style={_style.text}
       >
         {project.name}
       </Button>
@@ -47,7 +47,7 @@ const NavigationButton = props => {
       <Button
         key='boardButton'
         disabled
-        style={{ color: 'white' }}
+        style={_style.text}
       >
         {board.name}
       </Button>

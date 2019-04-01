@@ -30,4 +30,24 @@ router.post('/:projectId/boards', (req, res, next) => {
     .catch(next);
 });
 
+// statuses
+router.get('/:projectId/boards/:boardId/statuses', (req, res, next) => {
+  const user = req.user;
+  const { projectId, boardId } = req.params;
+  console.log(`Getting board id=${boardId} statuses for project id=${projectId}`);
+  boardDao.getStatusesForBoard(boardId)
+    .then(statuses => res.send(statuses))
+    .catch(next);
+});
+
+// items
+router.get('/:projectId/boards/:boardId/items', (req, res, next) => {
+  const user = req.user;
+  const { projectId, boardId } = req.params;
+  console.log(`Getting board id=${boardId} items for project id=${projectId}`);
+  boardDao.getItemsForBoard(projectId, boardId)
+    .then(statuses => res.send(statuses))
+    .catch(next);
+});
+
 module.exports = router;

@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const IssuesPage = props => {
+const IssuesPage = () => {
   return (
     <h1>Issues Coming Soon</h1>
   )

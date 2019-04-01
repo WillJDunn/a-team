@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const ChatPage = props => {
+
+const ChatPage = () => {
   return (
     <h1>Chat Coming Soon</h1>
   )
