@@ -1,0 +1,134 @@
+-- Updated Sat 30 Mar 2019 01:32:15 PM PDT
+-- IMPORTANT: all existing data for these tables will be DELETED. This is required because
+--   these explicitly state ID column values which might otherwise be in use
+--
+-- This script is manually updated periodically based on the SQL contained in
+--   https://docs.google.com/spreadsheets/d/1OoYSdDnV2SZvPscjIzZSVcfawIb_xjYi5DOU9pmlSLI/edit?usp=sharing
+--
+-- It's basically got everything we need for managing our own project:
+--   users table has IDs for each of us with password "foo"
+--   There is a project called Team A. This project has a board called Development
+--   Board Development has items for each of our user stories (as we listed in our previous project presentation)
+--   There's also a bit of other data not for our project just test stuff
+DELETE FROM comments;
+DELETE FROM items;
+DELETE FROM statuses;
+DELETE FROM default_statuses;
+DELETE FROM board_users;
+DELETE FROM boards;
+DELETE FROM priorities;
+DELETE FROM default_priorities;
+DELETE FROM project_users;
+DELETE FROM projects;
+DELETE FROM users;
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (1, 'Will', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'dunnw@bu.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (2, 'Anirudh', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'akart@bu.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (3, 'Annie', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'yinchia@bu.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (4, 'Dhiren', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'dhirenv@bu.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (5, 'Jianqing', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'gaojq@bu.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (6, 'Jimmy', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'jgoddard@bu.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (7, 'Behdad', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'behdad@foo.edu', NOW());
+INSERT INTO users (user_id, user_name, password, email, registered_at) VALUES (8, 'testuser', '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', 'testuser@foo.com', NOW());
+INSERT INTO projects (project_id, project_name, description) VALUES (1, 'Team A', 'Team 1 semester project');
+INSERT INTO projects (project_id, project_name, description) VALUES (2, 'Team B', 'Test and example project');
+INSERT INTO projects (project_id, project_name, description) VALUES (3, 'Team C', 'Test and example project');
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 1, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 2, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 3, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 4, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 5, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 6, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 7, FALSE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (1, 8, FALSE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 1, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 2, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 3, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 4, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 5, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 6, TRUE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 7, FALSE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (2, 8, FALSE, 1, NOW());
+INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at) VALUES (3, 8, TRUE, 1, NOW());
+INSERT INTO default_priorities (priority_rank, priority_name, description) VALUES (1, 'High', 'Required immediately');
+INSERT INTO default_priorities (priority_rank, priority_name, description) VALUES (2, 'Medium', 'Required ASAP');
+INSERT INTO default_priorities (priority_rank, priority_name, description) VALUES (3, 'Low', 'Complete when resources are available');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (1, 1, 1, 'High', 'Required immediately');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (2, 1, 2, 'Medium', 'Required ASAP');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (3, 1, 3, 'Low', 'Complete when resources are available');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (4, 2, 1, 'High', 'Required immediately');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (5, 2, 2, 'Medium', 'Required ASAP');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (6, 2, 3, 'Low', 'Complete when resources are available');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (7, 3, 1, 'High', 'Required immediately');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (8, 3, 2, 'Medium', 'Required ASAP');
+INSERT INTO priorities (priority_id, project_id, priority_rank, priority_name, description) VALUES (9, 3, 3, 'Low', 'Complete when resources are available');
+INSERT INTO boards (board_id, project_id, board_name, description) VALUES (1, 1, 'Development', 'Development team board project TeamA');
+INSERT INTO boards (board_id, project_id, board_name, description) VALUES (2, 1, 'Marketing', 'Marketing team board project TeamA');
+INSERT INTO boards (board_id, project_id, board_name, description) VALUES (3, 2, 'Development', 'Development team board project TeamB');
+INSERT INTO boards (board_id, project_id, board_name, description) VALUES (4, 2, 'Marketing', 'Marketing team board project TeamB');
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 1, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 2, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 3, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 4, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 5, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 6, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 7, FALSE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (1, 8, FALSE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 1, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 2, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 3, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 4, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 5, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 6, TRUE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 7, FALSE, 1, NOW());
+INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at) VALUES (2, 8, FALSE, 1, NOW());
+INSERT INTO default_statuses (status_rank, status_name, description) VALUES (1, 'Incoming', 'New');
+INSERT INTO default_statuses (status_rank, status_name, description) VALUES (2, 'In Progress', 'In development');
+INSERT INTO default_statuses (status_rank, status_name, description) VALUES (3, 'Testing', 'In test');
+INSERT INTO default_statuses (status_rank, status_name, description) VALUES (4, 'Completed', 'Done');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (1, 1, 1, 'Incoming', 'New');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (2, 1, 2, 'In Progress', 'In development');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (3, 1, 3, 'Testing', 'In test');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (4, 1, 4, 'Completed', 'Done');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (5, 2, 1, 'Incoming', 'New');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (6, 2, 2, 'In Progress', 'In development');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (7, 2, 3, 'Testing', 'In test');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (8, 2, 4, 'Completed', 'Done');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (9, 3, 1, 'Incoming', 'New');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (10, 3, 2, 'In Progress', 'In development');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (11, 3, 3, 'Testing', 'In test');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (12, 3, 4, 'Completed', 'Done');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (13, 4, 1, 'Incoming', 'New');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (14, 4, 2, 'In Progress', 'In development');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (15, 4, 3, 'Testing', 'In test');
+INSERT INTO statuses (status_id, board_id, status_rank, status_name, description) VALUES (16, 4, 4, 'Completed', 'Done');
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (1, 1, 1, 1, 2, FALSE, 'Test item 1', 'This is a test item', '2019-05-02 23:59:59', NULL, 1, NULL, 'Test label', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (2, 1, 1, 1, 2, TRUE, 'Test issue 1', 'This is a test issue', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (3, 1, 1, 1, 2, TRUE, 'Test issue 2', 'This is a second test issue', '2019-05-02 23:59:59', 120, 1, 6, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (4, 1, 1, 1, 1, FALSE, 'Story 1', 'As a user, I would like to be notified through the UI if my login has failed so that I can try again in case I entered the wrong credentials (Dhiren and Jimmy)', '2019-05-02 23:59:59', 60, 1, 6, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (5, 1, 1, 1, 1, FALSE, 'Story 2', 'As a backend engineer, I would like to have a well documented relational diagram for our MySQL database so that I can intelligently make decisions about how the backend will have to interact with the database. (Will)', '2019-05-02 23:59:59', NULL, 1, 1, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (6, 1, 1, 1, 1, FALSE, 'Story 3', 'As an engineer, I would like to have a SQL script which will create all of the tables, views, users, and indexes that we will use in the MySQL database so that we can spin up a fresh database and have it ready to develop against with minimal additional setup. (Will)', '2019-05-02 23:59:59', 120, 1, 1, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (7, 1, 1, 2, 1, FALSE, 'Story 4', 'As an engineer, I want to be able to reset a users password so they can access the system when they forget their password', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (8, 1, 1, 2, 1, FALSE, 'Story 5', 'As a user, I would like to be able to create new projects so that I can organize different boards, chat messages, and issues.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (9, 1, 1, 2, 1, FALSE, 'Story 6', 'As a project admin, I would like to be able to assign users to projects so that they can be involved in implementing features through the board, communicating with other developers through the chat, and tracking issues for that project in the issues section.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (10, 1, 1, 2, 1, FALSE, 'Story 7', 'As a project admin, I would like to be able to create boards so that myself and the dev team can keep track of progress on feature development.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (11, 1, 1, 2, 1, FALSE, 'Story 8', 'As a project admin, I would like to be able to create chat rooms so that I can have targeted conversations with other people working on the same project in the same board.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (12, 1, 1, 2, 1, FALSE, 'Story 9', 'As a project user, I would like to be able to create new issues so that I can keep tracking of defects within the project that I’m working on.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (13, 1, 1, 3, 1, FALSE, 'Story 10', 'As a project owner, I would like to be able to see what items exist for a specific board, what status each item is in, and who the item is assigned to so that I can coordinate project development across teams as well as report to stakeholders on project progress.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (14, 1, 1, 3, 2, FALSE, 'Story 11', 'As a user, I would like to be able to navigate to different parts of the app through a URL so that I don’t have to always click all the way through the app to get to the page that is most useful to me.  (Anirudh and Jimmy)', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (15, 1, 1, 3, 2, FALSE, 'Story 12', 'As a backend engineer, I would like to have all of the SQL queries written by someone more familiar with the db so that I can very efficiently implement the REST API’s and Access Objects that will provide required functionality to the frontend (Annie)', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (16, 1, 1, 3, 2, FALSE, 'Story 13', 'As a user, I would like to be able to reset my password so that if I forget the password I signed up with I can still access my account', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (17, 1, 1, 3, 2, FALSE, 'Story 14', 'As a user, I would like to be able to change my password in order to have the security of setting a new password every so often', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (18, 1, 1, 3, 2, FALSE, 'Story 15', 'As a board user, I would like to be able to communicate with other people using the same board in real time so that I can communicate as efficiently as is possible.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (19, 1, 1, 3, 3, FALSE, 'Story 16', 'As a prospective user, I would like to be able to validate my account by responding to an auto-generated verification email to the email address I provided during account signup so that I can receive important information about the app in a timely manner.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (20, 1, 1, 3, 3, FALSE, 'Story 17', 'As a user, I would like to have captcha (I am not a robot) verification on user creation in order to verify that only humans are creating accounts for the app', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (21, 1, 1, 3, 3, FALSE, 'Story 18', 'As a user, I would like for the app to store my real name, an avatar picture, and a description of myself so that other users can know more about me', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (22, 1, 1, 3, 3, FALSE, 'Story 19', 'As a user, I would like to be able to edit my user information so that I can keep it up to date if something changes', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (23, 1, 1, 3, 3, FALSE, 'Story 20', 'As a user, I would like to be able to maintain a list of other users who I collaborate with often in order to conveniently continue to collaborate with those users', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (24, 1, 1, 3, 3, FALSE, 'Story 21', 'As a projects user, I would like to be able to search and filter projects by keyword so I can access particular projects easily', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (25, 1, 1, 3, 3, FALSE, 'Story 22', 'As a projects user, I would like to be able to search and filter issues by keyword so I can access particular project issues easily', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (26, 1, 1, 3, 3, FALSE, 'Story 23', 'As a boards user, I would like to be able to search and filter items by keyword so I can access particular board items easily', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (27, 1, 1, 3, 3, FALSE, 'Story 24', 'As a boards user, I would like to be able to make time entries showing how much time I have spent working on an item', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (28, 1, 1, 3, 3, FALSE, 'Story 25', 'As a chat room user, I would like to be able to attach files to a message so that I can have multimedia conversations with other chat room users.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+INSERT INTO items (item_id, project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at) VALUES (29, 1, 1, 3, 3, FALSE, 'Story 26', 'As a chat room user, I would like to be able to use emoticons in the chatroom so that I have more options to express my emotions in messages to colleagues.', '2019-05-02 23:59:59', NULL, 1, NULL, 'NULL', NOW());
+CALL add_comment(1, 1, 'Test comment 1', @out);
+CALL add_comment(1, 1, 'Test comment 2', @out);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -34,23 +35,23 @@ const CreateUserWidget = props => {
   const [password, setPassword] = useState('');
   const [secondPassword, setSecondPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState();
   const onSubmit = (username, password, secondPassword, email) => {
+    setError(undefined); // clear previous error
     if (!doPasswordsMatch(password, secondPassword)) {
       setError('Passwords must match!');
       return;
-    }
-    if (!isEmailValid(email)) {
+    } else if (!isEmailValid(email)) {
       setError('Email must be a valid email address!');
       return;
     }
     props.onSubmit(username, password, email);
   };
-
+  const errorMsg = error || props.error;
   return (
     <div style={_style.root}>
       <div style={_style.errorContainer}>
-        <span style={_style.error}>{error}</span>
+        <span style={_style.error}>{errorMsg}</span>
       </div>
       <div style={_style.textContainer}>
         <TextField
@@ -99,6 +100,15 @@ const CreateUserWidget = props => {
       </div>
     </div>
   )
+};
+
+CreateUserWidget.propTypes = {
+  error: PropTypes.string,
+  onSubmit: PropTypes.func,
+};
+
+CreateUserWidget.defaultProps = {
+  onSubmit: () => {},
 };
 
 export default CreateUserWidget;

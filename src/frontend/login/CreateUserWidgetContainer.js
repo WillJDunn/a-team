@@ -1,9 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux-starter-kit';
 import { withRouter } from 'react-router-dom';
 import CreateUserWidget from './CreateUserWidget';
 import { login } from './LoginWidgetContainer';
+import { createUserSucceeded, createUserFailed } from '../reducers/user';
+import * as selectors from '../reducers/rootReducer';
 
 
 export const createUser = (username, password, email, history) => dispatch => {
@@ -17,20 +20,30 @@ export const createUser = (username, password, email, history) => dispatch => {
   };
   return fetch('/api/users', opts)
     .then(response => {
-      console.log(response);
       if (Math.floor(response.status / 100 ) !== 2) { // failure
         throw new Error('Create User failed!');
       } // success
+      dispatch(createUserSucceeded());
       return dispatch(login(username, password, history));
     })
-    .catch(err => console.log(err));
+    .catch(err => dispatch(createUserFailed(err.message)));
 };
 
 const CreateUserWidgetContainer = props => {
   return (
-    <CreateUserWidget onSubmit={props.createUser}/>
+    <CreateUserWidget error={props.error} onSubmit={props.createUser}/>
   );
 };
+
+CreateUserWidgetContainer.propTypes = {
+  // from connect
+  error: PropTypes.string,
+  createUser: PropTypes.func,
+};
+
+const mapStateToProps = state => ({
+  error: selectors.getCreateUserError(state),
+});
 
 const mapDispatchToProps = (dispatch, props) => ({
   createUser: (username, password, email) =>
@@ -39,7 +52,7 @@ const mapDispatchToProps = (dispatch, props) => ({
 
 const enhance = compose(
   withRouter,
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 );
 
 export default enhance(CreateUserWidgetContainer);
