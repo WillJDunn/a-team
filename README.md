@@ -128,7 +128,7 @@ CALL check_user_password_by_email(email,'password');
 -- You would probably create string variables in javascript like userName, password, emailAddress
 -- also create a variable to store the id integer that is created
 -- then you would execute the following SQL:
--- `CALL add_user(${userName}, ${password}, ${emailAddress}, @${id})
+-- `CALL add_user(${userName}, ${password}, ${emailAddress})
 
 -- If the procedure inserts a row the variable out_id is used to return the unique ID created
 
@@ -139,15 +139,13 @@ CALL check_user_password_by_email(email,'password');
 `CALL add_user (
    ${user_name},
    ${password},
-   ${email},
-   @${returnedID})`
+   ${email})`
 
 `CALL add_project_user (
    ${project_id},
    ${user_id},
    ${is_admin},
-   ${added_by},
-   @${returnedID})`
+   ${added_by})`
 
 
 -- Note: when adding a project you should also execute add_project_user with the returned out_id
@@ -156,15 +154,13 @@ CALL check_user_password_by_email(email,'password');
 -- table along with the project_id created in this procedure
 `CALL add_project (
    ${project_name},
-   ${description},
-   @${returnedID})`
+   ${description})`
 
 `CALL add_board_user (
    ${board_id},
    ${user_id},
    ${is_admin},
-   ${added_by},
-   @${returnedID})`
+   ${added_by})`
 
 -- Note: when adding a board you should also execute add_board_user with the returned out_id
 -- as board_id, the user_id of the user that created the project, and is_admin = True (1)
@@ -173,15 +169,13 @@ CALL check_user_password_by_email(email,'password');
 `CALL add_board (
    ${project_id},
    ${board_name},
-   ${description},
-   @${returnedID})`
+   ${description})`
 
 
 `CALL add_comment (
    ${item_id},
    ${user_id},
-   ${comment},
-   @${returnedID})`
+   ${comment})`
 
 `CALL add_item (
    ${project_id},
@@ -195,8 +189,7 @@ CALL check_user_password_by_email(email,'password');
    ${time_estimate},
    ${created_by},
    ${assigned_to},
-   ${labels},
-   @${returnedID})`
+   ${labels})`
 
 
 -- Important: many values of other tables are deleted via cascading deletes!
