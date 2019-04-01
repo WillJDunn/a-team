@@ -178,6 +178,7 @@ mysql> SELECT * FROM comments WHERE comment_id = 4;
 -- -----------------------------------------------------
 -- Per NIST best practices accepts passwords up to 64 characters
 -- passwords will be hashed with SHA2 encryption
+-- The following parameters cannot be null: user_name, email
 CALL add_user(
   user_name VARCHAR(45),
   password VARCHAR(64),
@@ -187,6 +188,7 @@ CALL add_user(
 -- -----------------------------------------------------
 -- procedure add_project_user
 -- -----------------------------------------------------
+-- The following parameters cannot be null: project_id, user_id
 CALL add_project_user(
   project_id INT,
   user_id INT,
@@ -201,6 +203,7 @@ CALL add_project_user(
 -- as project_id, the user_id of the user that created the project, and is_admin = True (1)
 -- Also inserts into table priorities. The inserted rows include each row from the default_priorities
 -- table along with the project_id created in this procedure
+-- The following parameters cannot be null: project_name
 CALL add_project(
   project_name VARCHAR(45),
   description VARCHAR(255))
@@ -209,6 +212,8 @@ CALL add_project(
 -- -----------------------------------------------------
 -- procedure add_priority
 -- -----------------------------------------------------
+-- The following parameters cannot be null: project_id, priority_name
+-- Prior to 2019-04-01 the following fields could not be null: priority_rank
 CALL add_priority(
   project_id INT,
   priority_rank INT,
@@ -219,6 +224,7 @@ CALL add_priority(
 -- -----------------------------------------------------
 -- procedure add_board_user
 -- -----------------------------------------------------
+-- The following parameters cannot be null: board_id, user_id
 CALL add_board_user(
   board_id INT,
   user_id INT,
@@ -233,6 +239,7 @@ CALL add_board_user(
 -- as board_id, the user_id of the user that created the board, and is_admin = True (1)
 -- Also inserts into table statuses. The inserted rows include each row from the default_statuses
 -- table along with the board_id created in this procedure
+-- The following parameters cannot be null: project_id, board_name
 CALL add_board(
   project_id INT,
   board_name VARCHAR(45),
@@ -242,6 +249,7 @@ CALL add_board(
 -- -----------------------------------------------------
 -- procedure add_status
 -- -----------------------------------------------------
+-- The following parameters cannot be null: board_id, status_name
 CALL add_status(
   board_id INT,
   status_rank INT,
@@ -252,6 +260,7 @@ CALL add_status(
 -- -----------------------------------------------------
 -- procedure add_comment
 -- -----------------------------------------------------
+-- The following parameters cannot be null: item_id, user_id, comment
 CALL add_comment(
   item_id INT,
   user_id INT,
@@ -261,6 +270,7 @@ CALL add_comment(
 -- -----------------------------------------------------
 -- procedure add_item
 -- -----------------------------------------------------
+-- The following parameters cannot be null: project_id, item_name, created_by
 CALL add_item(
   project_id INT,
   board_id INT,
@@ -348,6 +358,7 @@ CALL delete_comment(comment_id INT)
 -- -----------------------------------------------------
 -- procedure edit_board
 -- -----------------------------------------------------
+-- The following parameters cannot be null: board_id, board_name
 CALL edit_board(
   board_id INT,
   board_name VARCHAR(45),
@@ -359,6 +370,7 @@ CALL edit_board(
 -- -----------------------------------------------------
 -- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
 -- admin privileges is important
+-- The following parameters cannot be null: board_id, user_id
 CALL grant_board_admin(
   board_id INT,
   user_id INT,
@@ -370,6 +382,7 @@ CALL grant_board_admin(
 -- -----------------------------------------------------
 -- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
 -- admin privileges is important
+-- The following parameters cannot be null: board_id, user_id
 CALL revoke_board_admin(
   board_id INT,
   user_id INT,
@@ -382,6 +395,8 @@ CALL revoke_board_admin(
 -- Note: you may want to append additional text to the updated comment such
 -- as UPDATED <<timestamp>> so end users can know that the comment has been
 -- updated. We do not do that in the procedure so application can control that
+-- We also leave the created_at timestamp unchanged to maintain comment ordering
+-- The following parameters cannot be null: comment_id, comment
 CALL edit_comment(
   comment_id INT,
   comment TEXT)
@@ -392,6 +407,7 @@ CALL edit_comment(
 -- -----------------------------------------------------
 -- Note: when editing an item you should probably also add a comment (via add_comment)
 -- showing the old/new values for the modified fields and who modified it for audit
+-- The following parameters cannot be null: project_id, item_name, created_by
 CALL edit_item(
   item_id INT,
   board_id INT,
@@ -410,6 +426,8 @@ CALL edit_item(
 -- -----------------------------------------------------
 -- procedure edit_priority
 -- -----------------------------------------------------
+-- The following parameters cannot be null: project_id, priority_name
+-- Prior to 2019-04-01 the following fields could not be null: priority_rank
 CALL edit_priority(
   priority_id INT,
   priority_rank INT,
@@ -426,6 +444,7 @@ CALL delete_priority(priority_id INT)
 -- -----------------------------------------------------
 -- procedure edit_status
 -- -----------------------------------------------------
+-- The following parameters cannot be null: board_id, status_name
 CALL edit_status(
   status_id INT,
   status_rank INT,
@@ -469,6 +488,7 @@ CALL check_user_password_by_email(
 -- -----------------------------------------------------
 -- Per NIST best practices accepts passwords up to 64 characters
 -- passwords will be hashed with SHA2 encryption
+-- The following parameters cannot be null: user_id, user_name, email
 CALL edit_user(
   user_id INT,
   user_name VARCHAR(45),
@@ -479,6 +499,7 @@ CALL edit_user(
 -- -----------------------------------------------------
 -- procedure edit_project
 -- -----------------------------------------------------
+-- The following parameters cannot be null: project_id, project_name
 CALL edit_project(
   project_id INT,
   project_name VARCHAR(45),
@@ -490,6 +511,7 @@ CALL edit_project(
 -- -----------------------------------------------------
 -- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
 -- admin privileges is important
+-- The following parameters cannot be null: project_id, user_id
 CALL grant_project_admin(
   project_id INT,
   user_id INT,
@@ -501,6 +523,7 @@ CALL grant_project_admin(
 -- -----------------------------------------------------
 -- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
 -- admin privileges is important
+-- The following parameters cannot be null: board_id, user_id
 CALL revoke_project_admin(
   board_id INT,
   user_id INT,
