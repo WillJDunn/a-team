@@ -113,9 +113,15 @@ The following views should be used when querying tables:
 
 For queries use SELECT statements. For INSERTS and DELETES use the procedures described below.
 The passwords column of the users table is SHA2 encrypted. To check if a user's password is correct use the following stored procedures:
+```sql
 CALL check_user_password_by_user_id(user_id,'password');
+```
+```sql
 CALL check_user_password_by_user_name(user_name,'password');
+```
+```sql
 CALL check_user_password_by_email(email,'password');
+```
 
 ```sql
 -- The format for calling a procedure, using add_user as an example
