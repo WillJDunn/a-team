@@ -37,13 +37,13 @@ describe('boardDao', () => {
 
 
     // test createBoardForProject()
-    it('creates a board for project 2 as expected', () => {
+    it('creates a board for project 3 as expected', () => {
         const board = {
-            projectId: 2,
+            projectId: 3,
             name: 'board from Jest Test',
             description: 'You can delete this when done',
         };
-        return boardDao.createBoardForProject(2,board)
+        return boardDao.createBoardForProject(3,board)
             .then(insertId => {
                 return boardDao.getBoardById(insertId)
                     .then(actualBoard => {
