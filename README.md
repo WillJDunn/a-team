@@ -124,6 +124,7 @@ CALL check_user_password_by_email(email,'password');
 ```
 
 Procedures
+```sql
 /*
 The syntax for calling a MySQL stored procedure is
 CALL procedure_name(variable1, variable2);
