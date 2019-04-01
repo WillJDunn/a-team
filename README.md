@@ -180,7 +180,7 @@ CALL add_user(
 CALL add_project_user(
   project_id INT,
   user_id INT,
-  is_admin TINYINT,
+  is_admin BOOLEAN,
   added_by INT)
 
 
@@ -212,7 +212,7 @@ CALL add_priority(
 CALL add_board_user(
   board_id INT,
   user_id INT,
-  is_admin TINYINT,
+  is_admin BOOLEAN,
   added_by INT)
 
 
@@ -256,7 +256,7 @@ CALL add_item(
   board_id INT,
   status_id INT,
   priority_id INT,
-  is_issue TINYINT,
+  is_issue BOOLEAN,
   item_name VARCHAR(45),
   description MEDIUMTEXT,
   due_date DATETIME,
@@ -387,7 +387,7 @@ CALL edit_item(
   board_id INT,
   status_id INT,
   priority_id INT,
-  is_issue TINYINT,
+  is_issue BOOLEAN,
   item_name VARCHAR(45),
   description MEDIUMTEXT,
   due_date DATETIME,
