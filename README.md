@@ -134,7 +134,7 @@ CALL check_user_password_by_email(email,'password');
 
 -- You cannot pass empty values, instead pass NULL
 --   - for example, if you were to add a project user without specifying a value for added_by you
---   - should execute  `CALL add_project_user(1,1,FALSE,NULL, @${returnedID})` NOT `CALL add_project_user(1,1,FALSE,, @${returnedID})`
+--   - should execute  `CALL add_project_user(1,1,FALSE,NULL)` NOT `CALL add_project_user(1,1,FALSE,)`
 
 `CALL add_user (
    ${user_name},
