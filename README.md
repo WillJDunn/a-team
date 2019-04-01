@@ -77,7 +77,33 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### TeamA DB
 
-The included SQL script "teama_schema.sql" creates a schema "teama" owned by a new user "teama" with default password "team1_teamA". It requires MYSQL 5.7.  The following views should be used when querying tables:
+The included SQL script "teama_schema.sql" creates a schema "teama" owned by a new user "teama" with default password "team1_teamA". It requires MYSQL 5.7.  
+
+To create a new instance, connect to mysql as root. For convenience consider starting the connection from the directory containing the sql scripts
+```bash
+mysql -u root -p
+```
+
+If you are replacing an instance that already exists execute
+```sql
+DROP SCHEMA teama;
+```
+
+Execute teama_schema.sql which creates the schema, tables, stored procedures, user (teama)/ password
+```sql
+SOURCE teama_schema.sql;
+```
+
+To insert the sample data into the database, execute teama_sample_data.sql
+```sql
+SOURCE teama_sample_data.sql;
+```
+
+The database schema was last updated Sun 31 Mar 2019 04:28:25 PM PDT.
+The database stored procedures were last updated Sun 31 Mar 2019 04:28:25 PM PDT.
+If your database schema is already up to date but your stored procedures are not, you can update just the stored procedures by executing stored_procedures.sql.
+
+The following views should be used when querying tables:
 
 | Table         | View          
 | ------------- |-------------
@@ -85,7 +111,11 @@ The included SQL script "teama_schema.sql" creates a schema "teama" owned by a n
 | issues        | v_issues      
 | comments      | v_comments
 
-For queries use SELECT statements. For INSERTS and DELETES use the procedures described below:
+For queries use SELECT statements. For INSERTS and DELETES use the procedures described below.
+The passwords column of the users table is SHA2 encrypted. To check if a user's password is correct use the following stored procedures:
+CALL check_user_password_by_user_id(user_id,'password');
+CALL check_user_password_by_user_name(user_name,'password');
+CALL check_user_password_by_email(email,'password');
 
 ```sql
 -- The format for calling a procedure, using add_user as an example
