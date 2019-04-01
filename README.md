@@ -124,85 +124,163 @@ CALL check_user_password_by_email(email,'password');
 ```
 
 Procedures
-```sql
--- The format for calling a procedure, using add_user as an example
--- You would probably create string variables in javascript like userName, password, emailAddress
--- also create a variable to store the id integer that is created
--- then you would execute the following SQL:
--- `CALL add_user(${userName}, ${password}, ${emailAddress})
+/*
+The syntax for calling a MySQL stored procedure is
+CALL procedure_name(variable1, variable2);
 
--- If the procedure inserts a row the variable out_id is used to return the unique ID created
+You cannot pass empty variables. Pass NULL instead.
+For example:
+CALL add_example(variable1, NULL);
+NOT: add_example(variable1, );
 
--- You cannot pass empty values, instead pass NULL
---   - for example, if you were to add a project user without specifying a value for added_by you
---   - should execute  `CALL add_project_user(1,1,FALSE,NULL, @${returnedID})` NOT `CALL add_project_user(1,1,FALSE,, @${returnedID})`
-
-`CALL add_user (
-   ${user_name},
-   ${password},
-   ${email})`
-
-`CALL add_project_user (
-   ${project_id},
-   ${user_id},
-   ${is_admin},
-   ${added_by})`
+Procedures that insert data (add_`*`) usually create a unique ID for what they just inserted.
+When the procedure finishes executing, it will execute a SELECT SQL which returns the ID number
+that was created:
+mysql> CALL add_comment(1, 3, 'Test comment for item 1 by user 3');
++----+
+| id |
++----+
+|  4 |
++----+
+1 row in set (0.00 sec)
 
 
+That ID can be used to access the inserted data
+mysql> SELECT * FROM comments WHERE comment_id = 4;
++------------+---------+---------+---------------------+-----------------------------------+
+| comment_id | item_id | user_id | created_at          | comment                           |
++------------+---------+---------+---------------------+-----------------------------------+
+|          4 |       1 |       3 | 2019-03-31 18:39:54 | Test comment for item 1 by user 3 |
++------------+---------+---------+---------------------+-----------------------------------+
+1 row in set (0.00 sec)
+*/
+
+/*
+-- PROCEDURES DESCRIPTION FORMAT:
+   CALL procedure_name(
+     variable_name DATATYPE(MAX LENGTH),
+     variable_name DATATYPE(MAX LENGTH))
+*/
+
+-- -----------------------------------------------------
+-- procedure add_user
+-- -----------------------------------------------------
+-- Per NIST best practices accepts passwords up to 64 characters
+-- passwords will be hashed with SHA2 encryption
+CALL add_user(
+  user_name VARCHAR(45),
+  password VARCHAR(64),
+  email VARCHAR(45))
+
+
+-- -----------------------------------------------------
+-- procedure add_project_user
+-- -----------------------------------------------------
+CALL add_project_user(
+  project_id INT,
+  user_id INT,
+  is_admin TINYINT,
+  added_by INT)
+
+
+-- -----------------------------------------------------
+-- procedure add_project
+-- -----------------------------------------------------
 -- Note: when adding a project you should also execute add_project_user with the returned out_id
 -- as project_id, the user_id of the user that created the project, and is_admin = True (1)
 -- Also inserts into table priorities. The inserted rows include each row from the default_priorities
 -- table along with the project_id created in this procedure
-`CALL add_project (
-   ${project_name},
-   ${description})`
+CALL add_project(
+  project_name VARCHAR(45),
+  description VARCHAR(255))
 
-`CALL add_board_user (
-   ${board_id},
-   ${user_id},
-   ${is_admin},
-   ${added_by})`
 
+-- -----------------------------------------------------
+-- procedure add_priority
+-- -----------------------------------------------------
+CALL add_priority(
+  project_id INT,
+  priority_rank INT,
+  priority_name VARCHAR(45),
+  description VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure add_board_user
+-- -----------------------------------------------------
+CALL add_board_user(
+  board_id INT,
+  user_id INT,
+  is_admin TINYINT,
+  added_by INT)
+
+
+-- -----------------------------------------------------
+-- procedure add_board
+-- -----------------------------------------------------
 -- Note: when adding a board you should also execute add_board_user with the returned out_id
--- as board_id, the user_id of the user that created the project, and is_admin = True (1)
+-- as board_id, the user_id of the user that created the board, and is_admin = True (1)
 -- Also inserts into table statuses. The inserted rows include each row from the default_statuses
 -- table along with the board_id created in this procedure
-`CALL add_board (
-   ${project_id},
-   ${board_name},
-   ${description})`
+CALL add_board(
+  project_id INT,
+  board_name VARCHAR(45),
+  description VARCHAR(255))
 
 
-`CALL add_comment (
-   ${item_id},
-   ${user_id},
-   ${comment})`
-
-`CALL add_item (
-   ${project_id},
-   ${board_id},
-   ${status_id},
-   ${priority_id},
-   ${is_issue},
-   ${item_name},
-   ${description},
-   ${due_date},
-   ${time_estimate},
-   ${created_by},
-   ${assigned_to},
-   ${labels})`
+-- -----------------------------------------------------
+-- procedure add_status
+-- -----------------------------------------------------
+CALL add_status(
+  board_id INT,
+  status_rank INT,
+  status_name VARCHAR(45),
+  description VARCHAR(255))
 
 
+-- -----------------------------------------------------
+-- procedure add_comment
+-- -----------------------------------------------------
+CALL add_comment(
+  item_id INT,
+  user_id INT,
+  comment TEXT)
+
+
+-- -----------------------------------------------------
+-- procedure add_item
+-- -----------------------------------------------------
+CALL add_item(
+  project_id INT,
+  board_id INT,
+  status_id INT,
+  priority_id INT,
+  is_issue TINYINT,
+  item_name VARCHAR(45),
+  description MEDIUMTEXT,
+  due_date DATETIME,
+  time_estimate INT,
+  created_by INT,
+  assigned_to INT,
+  labels VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure delete_project
+-- -----------------------------------------------------
 -- Important: many values of other tables are deleted via cascading deletes!
 --   - related rows of the table: priorities will be cascade deleted
 --   - related rows of the table: items will be cascade deleted
 --     - related rows of the table: comments will be cascade deleted
-`CALL delete_project (${project_id})`
+CALL delete_project(project_id INT)
 
 
+-- -----------------------------------------------------
+-- procedure delete_user
+-- -----------------------------------------------------
 -- Important: this does not actually remove the user from the users table!
 --   Instead, we set the 'deactivated' field = true, set the password field to
---   null, and remove them from the project_users and board_users tables.
+-- 	 null, and remove them from the project_users and board_users tables.
 --   We do this instead of actually deleting it from the users table because
 --   there are rows referencing this value in tables like `items` and `comments` tables,
 --   which we want to persist. This still prevents the user from being able to
@@ -212,40 +290,210 @@ Procedures
 --   - sets `deactivated` to TRUE
 --   - removes related rows of the table: project_users
 --   - related rows of the table: board_users
-`CALL delete_user (${user_id})`
+CALL delete_user(user_id INT)
 
+
+-- -----------------------------------------------------
+-- procedure delete_board
+-- -----------------------------------------------------
 -- - Important: rows of the `statuses` table are deleted from cascading deletes!
 --   - related rows of the statuses table are removed via cascading deletes
 --   - removes rows of the `items` table that are associated with this board_id
 --     that are NOT issues (issues should persist since they are related to the project_id)
 --     - rows of the `comments` table related to deleted items are removed via cascading delete
-`CALL delete_board (${board_id})`
+CALL delete_board(board_id INT)
 
-`CALL delete_project_user (
-   ${board_id},
-   ${user_id})`
 
-`CALL delete_project_user (
-   ${board_id},
-   ${user_id})`
+-- -----------------------------------------------------
+-- procedure delete_project_user
+-- -----------------------------------------------------
+CALL delete_project_user(
+  project_id INT,
+  user_id INT)
 
+
+-- -----------------------------------------------------
+-- procedure delete_board_user
+-- -----------------------------------------------------
+CALL delete_board_user(
+  board_id INT,
+  user_id INT)
+
+
+-- -----------------------------------------------------
+-- procedure delete_item
+-- -----------------------------------------------------
 -- Important: related rows of the `comments` table will be deleted via cascade delete
-`CALL delete_item (${item_id})`
-
-`CALL delete_comment (${comment_id})
-```
+-- Note: related rows of `comments` table are cascade deleted
+CALL delete_item(item_id INT)
 
 
-Here's some sample code showing how you could make this call from one of the Javascript DAOs:
-```javascript
-const createUser = user => {
-  const values = [user.username, user.password, user.email];
-  const sql = 'CALL add_user(?, ?, ?, ?)';
-  return db.query(sql, values)
-    .then(dbRes => {
-      const rows = dbRes[dbRes.length - 1];
-      return rows[0].userId;
-    });
+-- -----------------------------------------------------
+-- procedure delete_comment
+-- -----------------------------------------------------
+CALL delete_comment(comment_id INT)
+
+
+-- -----------------------------------------------------
+-- procedure edit_board
+-- -----------------------------------------------------
+CALL edit_board(
+  board_id INT,
+  board_name VARCHAR(45),
+  description VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure grant_board_admin
+-- -----------------------------------------------------
+-- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
+-- admin privileges is important
+CALL grant_board_admin(
+  board_id INT,
+  user_id INT,
+  modified_by INT)
+
+
+-- -----------------------------------------------------
+-- procedure revoke_board_admin
+-- -----------------------------------------------------
+-- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
+-- admin privileges is important
+CALL revoke_board_admin(
+  board_id INT,
+  user_id INT,
+  modified_by INT)
+
+
+-- -----------------------------------------------------
+-- procedure edit_comment
+-- -----------------------------------------------------
+-- Note: you may want to append additional text to the updated comment such
+-- as UPDATED <<timestamp>> so end users can know that the comment has been
+-- updated. We do not do that in the procedure so application can control that
+CALL edit_comment(
+  comment_id INT,
+  comment TEXT)
+
+
+-- -----------------------------------------------------
+-- procedure edit_item
+-- -----------------------------------------------------
+-- Note: when editing an item you should probably also add a comment (via add_comment)
+-- showing the old/new values for the modified fields and who modified it for audit
+CALL edit_item(
+  item_id INT,
+  board_id INT,
+  status_id INT,
+  priority_id INT,
+  is_issue TINYINT,
+  item_name VARCHAR(45),
+  description MEDIUMTEXT,
+  due_date DATETIME,
+  time_estimate INT,
+  created_by INT,
+  assigned_to INT,
+  labels VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure edit_priority
+-- -----------------------------------------------------
+CALL edit_priority(
+  priority_id INT,
+  priority_rank INT,
+  priority_name VARCHAR(45),
+  description VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure delete_priority
+-- -----------------------------------------------------
+CALL delete_priority(priority_id INT)
+
+
+-- -----------------------------------------------------
+-- procedure edit_status
+-- -----------------------------------------------------
+CALL edit_status(
+  status_id INT,
+  status_rank INT,
+  status_name VARCHAR(45),
+  description VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure delete_status
+-- -----------------------------------------------------
+CALL delete_status(status_id INT)
+
+
+-- -----------------------------------------------------
+-- procedure check_user_password_by_user_id
+-- -----------------------------------------------------
+CALL check_user_password_by_user_id(
+  user_id VARCHAR(45),
+  password VARCHAR(64))
+
+
+-- -----------------------------------------------------
+-- procedure check_user_password_by_user_name
+-- -----------------------------------------------------
+-- Looks up user_name and SHA2 encrypted password, returns user_id if there's a match on both
+CALL check_user_password_by_user_name(
+  user_name VARCHAR(45),
+  password VARCHAR(64))
+
+
+-- -----------------------------------------------------
+-- procedure check_user_password_by_email
+-- -----------------------------------------------------
+CALL check_user_password_by_email(
+  email VARCHAR(45),
+  password VARCHAR(64))
+
+
+-- -----------------------------------------------------
+-- procedure edit_user
+-- -----------------------------------------------------
+-- Per NIST best practices accepts passwords up to 64 characters
+-- passwords will be hashed with SHA2 encryption
+CALL edit_user(
+  user_id INT,
+  user_name VARCHAR(45),
+  password VARCHAR(64),
+  email VARCHAR(45))
+
+
+-- -----------------------------------------------------
+-- procedure edit_project
+-- -----------------------------------------------------
+CALL edit_project(
+  project_id INT,
+  project_name VARCHAR(45),
+  description VARCHAR(255))
+
+
+-- -----------------------------------------------------
+-- procedure grant_project_admin
+-- -----------------------------------------------------
+-- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
+-- admin privileges is important
+CALL grant_project_admin(
+  project_id INT,
+  user_id INT,
+  modified_by INT)
+
+
+-- -----------------------------------------------------
+-- procedure revoke_project_admin
+-- -----------------------------------------------------
+-- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
+-- admin privileges is important
+CALL revoke_project_admin(
+  board_id INT,
+  user_id INT,
+  modified_by INT)
 ```
 
 SQL for inserting sample data is maintained with this Google doc, is periodically copied to 'teama_sample_data.sql': https://docs.google.com/spreadsheets/d/1OoYSdDnV2SZvPscjIzZSVcfawIb_xjYi5DOU9pmlSLI/edit?usp=sharing
