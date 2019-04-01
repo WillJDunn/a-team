@@ -16,9 +16,9 @@ const getBoardsForProject = projectId => {
     .then(results => results.map(result => Board.fromDB(result)));
 };
 
-const getBoardById = (projectId, boardId) => {
-  const sql = 'SELECT * FROM teama.boards WHERE project_id = ? AND board_id = ?';
-  return db.query(sql, [projectId, boardId])
+const getBoardById = boardId => {
+  const sql = 'SELECT * FROM teama.boards WHERE board_id = ?';
+  return db.query(sql, [boardId])
     .then(results => results.map(result => Board.fromDB(result))[0]);
 };
 
@@ -29,8 +29,7 @@ const createBoardForProject = (projectId, board) => {
     .then(dbRes => {
       const rows = dbRes[dbRes.length - 1];
       return rows[0].insertId;
-    })
-    ;
+    });
 };
 
 const getStatusesForBoard = boardId => {
@@ -39,11 +38,21 @@ const getStatusesForBoard = boardId => {
     .then(results => results.map(result => StatusForBoard.fromDB(result)));
 };
 
-const getItemsForBoard = (projectId, boardId) => {
-  console.log(projectId, boardId);
-  const sql = 'SELECT * FROM teama.v_items WHERE project_id = ? AND board_id = ?';
-  return db.query(sql, [projectId, boardId])
+const getItemsForBoard = boardId => {
+  const sql = 'SELECT * FROM teama.v_items WHERE board_id = ?';
+  return db.query(sql, [boardId])
     .then(results => results.map(result => Item.fromDB(result)));
+};
+
+const createItemForBoard = (boardId, item) => {
+  const values = [item.projectId, item.boardId, item.statusId, item.priorityId, item.isIssue,
+    item.name, item.description, item.dueDate, item.timeEstimate, item.createdBy, item.assignedTo, item.labels];
+  const sql = 'SET @itemId = 0; CALL add_item(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @itemId); SELECT @itemId as itemId;';
+  return db.query(sql, values)
+    .then(dbRes => {
+      const rows = dbRes[dbRes.length - 1];
+      return rows[0].itemId;
+    });
 };
 
 module.exports = {

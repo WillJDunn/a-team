@@ -6,6 +6,8 @@ class Item {
     priorityId,
     priorityName,
     isIssue,
+    name,
+    description,
     dueDate,
     timeEstimate,
     createdBy,
@@ -20,6 +22,8 @@ class Item {
     this.priorityId = priorityId;
     this.priorityName = priorityName;
     this.isIssue = isIssue;
+    this.name = name;
+    this.description = description;
     this.dueDate = dueDate;
     this.timeEstimate = timeEstimate;
     this.createdBy = createdBy;
@@ -38,7 +42,7 @@ class Item {
       dbItem.priority_name,
       dbItem.is_issue,
       dbItem.item_name,
-      dbItem.describe,
+      dbItem.description,
       dbItem.due_date,
       dbItem.time_estimate,
       dbItem.created_by,

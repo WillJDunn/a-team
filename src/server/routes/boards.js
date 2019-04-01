@@ -16,7 +16,7 @@ router.get('/:projectId/boards/:boardId', (req, res, next) => {
   const user = req.user;
   const { projectId, boardId } = req.params;
   console.log(`Getting board id=${boardId} for project id=${projectId}`);
-  boardDao.getBoardById(projectId, boardId)
+  boardDao.getBoardById(boardId)
     .then(board => res.send(board))
     .catch(next);
 });
@@ -45,9 +45,13 @@ router.get('/:projectId/boards/:boardId/items', (req, res, next) => {
   const user = req.user;
   const { projectId, boardId } = req.params;
   console.log(`Getting board id=${boardId} items for project id=${projectId}`);
-  boardDao.getItemsForBoard(projectId, boardId)
-    .then(statuses => res.send(statuses))
+  boardDao.getItemsForBoard(boardId)
+    .then(items => {
+      console.log(items);
+      return res.send(items);
+    })
     .catch(next);
 });
+
 
 module.exports = router;

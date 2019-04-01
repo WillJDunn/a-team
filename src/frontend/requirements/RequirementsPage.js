@@ -11,11 +11,12 @@ const RequirementsPage = props => {
         {props.items.map(item =>
           <Paper square style={{ width: 200, margin: 4 }}>
             <div>id: {item.itemId}</div>
-            <div>status name: {item.statusName}</div>
-            <div>priority name: {item.priorityName}</div>
+            <div>name: {item.name}</div>
+            <div>status: {item.statusName}</div>
+            <div>priority: {item.priorityName}</div>
             <div>is issue: {item.isIssue}</div>
             <div>due date: {item.dueDate}</div>
-            <div>created by: {item.createdBy}</div>
+            <div>created by: {item.createdByName}</div>
             <div>assigned to: {item.assignedTo}</div>
             <div>created at: {item.createdAt}</div>
           </Paper>
