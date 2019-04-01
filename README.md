@@ -123,6 +123,7 @@ CALL check_user_password_by_user_name(user_name,'password');
 CALL check_user_password_by_email(email,'password');
 ```
 
+Procedures
 ```sql
 -- The format for calling a procedure, using add_user as an example
 -- You would probably create string variables in javascript like userName, password, emailAddress
@@ -134,7 +135,7 @@ CALL check_user_password_by_email(email,'password');
 
 -- You cannot pass empty values, instead pass NULL
 --   - for example, if you were to add a project user without specifying a value for added_by you
---   - should execute  `CALL add_project_user(1,1,FALSE,NULL)` NOT `CALL add_project_user(1,1,FALSE,)`
+--   - should execute  `CALL add_project_user(1,1,FALSE,NULL, @${returnedID})` NOT `CALL add_project_user(1,1,FALSE,, @${returnedID})`
 
 `CALL add_user (
    ${user_name},
@@ -233,6 +234,7 @@ CALL check_user_password_by_email(email,'password');
 
 `CALL delete_comment (${comment_id})
 ```
+
 
 Here's some sample code showing how you could make this call from one of the Javascript DAOs:
 ```javascript
