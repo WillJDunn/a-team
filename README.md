@@ -234,4 +234,16 @@ CALL check_user_password_by_email(email,'password');
 `CALL delete_comment (${comment_id})
 ```
 
+Here's some sample code showing how you could make this call from one of the Javascript DAOs:
+```javascript
+const createUser = user => {
+  const values = [user.username, user.password, user.email];
+  const sql = 'CALL add_user(?, ?, ?, ?)';
+  return db.query(sql, values)
+    .then(dbRes => {
+      const rows = dbRes[dbRes.length - 1];
+      return rows[0].userId;
+    });
+```
+
 SQL for inserting sample data is maintained with this Google doc, is periodically copied to 'teama_sample_data.sql': https://docs.google.com/spreadsheets/d/1OoYSdDnV2SZvPscjIzZSVcfawIb_xjYi5DOU9pmlSLI/edit?usp=sharing
