@@ -134,7 +134,7 @@ For example:
 CALL add_example(variable1, NULL);
 NOT: add_example(variable1, );
 
-Procedures that insert data (add_`*`) usually create a unique ID for what they just inserted.
+Procedures that insert data (add_*) usually create a unique ID for what they just inserted.
 When the procedure finishes executing, it will execute a SELECT SQL which returns the ID number
 that was created:
 mysql> CALL add_comment(1, 3, 'Test comment for item 1 by user 3');
@@ -163,6 +163,16 @@ mysql> SELECT * FROM comments WHERE comment_id = 4;
      variable_name DATATYPE(MAX LENGTH))
 */
 
+/*
+-- DATATYPE REFERENCE:
+   INT -- A 4 byte integer
+   VARCHAR(n) -- Text with a max length of n
+   BOOLEAN -- TRUE/FALSE or 0/1 (TINYINT)
+   DATETIME -- Date/Time with format 'YYYY-MM-DD HH:MM:SS' passed with 's
+   TEXT -- Text with a max length of 65,535 characters
+   MEDIUMTEXT -- Text with a max length of 16,777,215 characters
+*/
+
 -- -----------------------------------------------------
 -- procedure add_user
 -- -----------------------------------------------------
@@ -180,7 +190,7 @@ CALL add_user(
 CALL add_project_user(
   project_id INT,
   user_id INT,
-  is_admin BOOLEAN,
+  is_admin TINYINT,
   added_by INT)
 
 
@@ -212,7 +222,7 @@ CALL add_priority(
 CALL add_board_user(
   board_id INT,
   user_id INT,
-  is_admin BOOLEAN,
+  is_admin TINYINT,
   added_by INT)
 
 
@@ -256,7 +266,7 @@ CALL add_item(
   board_id INT,
   status_id INT,
   priority_id INT,
-  is_issue BOOLEAN,
+  is_issue TINYINT,
   item_name VARCHAR(45),
   description MEDIUMTEXT,
   due_date DATETIME,
@@ -387,7 +397,7 @@ CALL edit_item(
   board_id INT,
   status_id INT,
   priority_id INT,
-  is_issue BOOLEAN,
+  is_issue TINYINT,
   item_name VARCHAR(45),
   description MEDIUMTEXT,
   due_date DATETIME,
