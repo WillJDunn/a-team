@@ -142,7 +142,7 @@ DROP TABLE IF EXISTS `teama`.`priorities` ;
 CREATE TABLE IF NOT EXISTS `teama`.`priorities` (
   `priority_id` INT NOT NULL AUTO_INCREMENT,
   `project_id` INT NOT NULL,
-  `priority_rank` INT NOT NULL,
+  `priority_rank` INT NULL,
   `priority_name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`priority_id`),
@@ -273,7 +273,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `teama`.`default_priorities` ;
 
 CREATE TABLE IF NOT EXISTS `teama`.`default_priorities` (
-  `priority_rank` INT NOT NULL,
+  `priority_rank` INT NULL,
   `priority_name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NULL)
 ENGINE = InnoDB;
