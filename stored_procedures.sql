@@ -1,5 +1,6 @@
--- Updated Sat 30 Mar 2019 01:32:15 PM PDT
+-- Sun 31 Mar 2019 04:28:25 PM PDT
 -- Note: also included in teama_schema.sql
+
 -- -----------------------------------------------------
 -- procedure add_user
 -- -----------------------------------------------------
@@ -14,12 +15,11 @@ USE `teama`$$
 CREATE PROCEDURE `add_user` (
   IN in_user_name VARCHAR(45),
   IN in_password VARCHAR(64),
-  IN in_email VARCHAR(45),
-  OUT out_id INT)
+  IN in_email VARCHAR(45))
 BEGIN
 INSERT INTO users (user_name, password, email, registered_at)
   VALUES (in_user_name, SHA2(in_password, 256), in_email, NOW());
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() AS user_id;
 END$$
 
 DELIMITER ;
@@ -41,6 +41,7 @@ CREATE PROCEDURE `add_project_user` (
 BEGIN
 INSERT INTO project_users (project_id, user_id, is_admin, added_by, added_at)
   VALUES (in_project_id, in_user_id, in_is_admin, in_added_by, NOW());
+SELECT in_project_id AS project_id, in_user_id AS user_id;
 END$$
 
 DELIMITER ;
@@ -60,15 +61,16 @@ USE `teama`$$
 -- table along with the project_id created in this procedure
 CREATE PROCEDURE `add_project` (
   IN in_project_name VARCHAR(45),
-  IN in_description VARCHAR(255),
-  OUT out_id INT)
+  IN in_description VARCHAR(255))
 BEGIN
+DECLARE out_id INT DEFAULT 0;
 INSERT INTO projects (project_name, description)
   VALUES (in_project_name, in_description);
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() INTO out_id;
 INSERT INTO priorities (project_id, priority_rank, priority_name, description)
-  SELECT @out_id, default_priorities.priority_rank, default_priorities.priority_name, default_priorities.description 
+  SELECT out_id, default_priorities.priority_rank, default_priorities.priority_name, default_priorities.description 
   FROM default_priorities;
+SELECT out_id AS project_id;
 END$$
 
 DELIMITER ;
@@ -86,12 +88,11 @@ CREATE PROCEDURE `add_priority` (
   IN in_project_id INT,
   IN in_priority_rank INT,
   IN in_priority_name VARCHAR(45),
-  IN in_description VARCHAR(255),
-  OUT out_id INT)
+  IN in_description VARCHAR(255))
 BEGIN
 INSERT INTO priorities (project_id, priority_rank, priority_name, description)
   VALUES (in_project_id, in_priority_rank, in_priority_name, in_description);
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() AS priority_id;
 END$$
 
 DELIMITER ;
@@ -113,6 +114,7 @@ CREATE PROCEDURE `add_board_user` (
 BEGIN
 INSERT INTO board_users (board_id, user_id, is_admin, added_by, added_at)
   VALUES (in_board_id, in_user_id, in_is_admin, in_added_by, NOW());
+SELECT in_board_id AS board_id, in_user_id AS user_id;
 END$$
 
 DELIMITER ;
@@ -133,15 +135,16 @@ USE `teama`$$
 CREATE PROCEDURE `add_board` (
   IN in_project_id INT,
   IN in_board_name VARCHAR(45),
-  IN in_description VARCHAR(255),
-  OUT out_id INT)
+  IN in_description VARCHAR(255))
 BEGIN
+DECLARE out_id INT DEFAULT 0;
 INSERT INTO boards (project_id, board_name, description)
   VALUES (in_project_id, in_board_name, in_description);
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() INTO out_id;
 INSERT INTO statuses (board_id, status_rank, status_name, description)
-  SELECT @out_id, default_statuses.status_rank, default_statuses.status_name, default_statuses.description 
+  SELECT out_id, default_statuses.status_rank, default_statuses.status_name, default_statuses.description 
   FROM default_statuses;
+SELECT out_id AS board_id;
 END$$
 
 DELIMITER ;
@@ -159,12 +162,11 @@ CREATE PROCEDURE `add_status` (
   IN in_board_id INT,
   IN in_status_rank INT,
   IN in_status_name VARCHAR(45),
-  IN in_description VARCHAR(255),
-  OUT out_id INT)
+  IN in_description VARCHAR(255))
 BEGIN
 INSERT INTO statuses (board_id, status_rank, status_name, description)
   VALUES (in_board_id, in_status_rank, in_status_name, in_description);
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() AS status_id;
 END$$
 
 DELIMITER ;
@@ -181,12 +183,11 @@ USE `teama`$$
 CREATE PROCEDURE `add_comment` (
   IN in_item_id INT,
   IN in_user_id INT,
-  IN in_comment TEXT,
-  OUT out_id INT)
+  IN in_comment TEXT)
 BEGIN
 INSERT INTO comments (item_id, user_id, created_at, comment)
   VALUES (in_item_id, in_user_id, NOW(), in_comment);
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() AS comment_id;
 END$$
 
 DELIMITER ;
@@ -212,12 +213,11 @@ CREATE PROCEDURE `add_item` (
   IN in_time_estimate INT,
   IN in_created_by INT,
   IN in_assigned_to INT,
-  IN in_labels VARCHAR(255),
-  OUT out_id INT)
+  IN in_labels VARCHAR(255))
 BEGIN
 INSERT INTO items (project_id, board_id, status_id, priority_id, is_issue, item_name, description, due_date, time_estimate, created_by, assigned_to, labels, created_at)
   VALUES (in_project_id, in_board_id, in_status_id, in_priority_id, in_is_issue, in_item_name, in_description, in_due_date, in_time_estimate, in_created_by, in_assigned_to, in_labels, NOW());
-SELECT LAST_INSERT_ID() INTO @out_id;
+SELECT LAST_INSERT_ID() AS item_id;
 END$$
 
 DELIMITER ;
