@@ -44,6 +44,18 @@ const getItemsForBoard = boardId => {
     .then(results => results.map(result => Item.fromDB(result)));
 };
 
+const getRequirementsForBoard = boardId => {
+  const sql = 'SELECT * FROM teama.v_items WHERE board_id = ? and is_issue = FALSE';
+  return db.query(sql, [boardId])
+    .then(results => results.map(result => Item.fromDB(result)));
+};
+
+const getIssuesForBoard = boardId => {
+  const sql = 'SELECT * FROM teama.v_items WHERE board_id = ? and is_issue = TRUE';
+  return db.query(sql, [boardId])
+    .then(results => results.map(result => Item.fromDB(result)));
+};
+
 const createItemForBoard = (boardId, item) => {
   const values = [item.projectId, item.boardId, item.statusId, item.priorityId, item.isIssue,
     item.name, item.description, item.dueDate, item.timeEstimate, item.createdBy, item.assignedTo, item.labels];
@@ -62,4 +74,7 @@ module.exports = {
   createBoardForProject,
   getStatusesForBoard,
   getItemsForBoard,
+  getRequirementsForBoard,
+  getIssuesForBoard,
+  createItemForBoard,
 };

@@ -12,11 +12,10 @@ const RequirementsPageContainer = props => {
       .then(statuses => setStatuses([...statuses]))
   }, []);
   useEffect(() => {
-    fetch(`/api/projects/${project.id}/boards/${board.id}/items`)
+    fetch(`/api/projects/${project.id}/boards/${board.id}/items?type=requirement`)
       .then(res => res.json())
       .then(items => setItems([...items]));
   }, []);
-  console.log(items);
   return (
     <RequirementsPage statuses={statuses} items={items} />
   )

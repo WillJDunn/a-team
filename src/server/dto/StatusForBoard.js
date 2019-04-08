@@ -1,8 +1,8 @@
 class StatusForBoard {
   constructor(statusId, boardId, statusRank, statusName, description) {
-    this.statusId = statusId;
+    this.id = statusId;
     this.boardId = boardId;
-    this.statusName = statusName;
+    this.name = statusName;
     this.description = description;
   }
   static fromDB(dbStatus) {

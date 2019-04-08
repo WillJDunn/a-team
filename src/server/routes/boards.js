@@ -44,14 +44,28 @@ router.get('/:projectId/boards/:boardId/statuses', (req, res, next) => {
 router.get('/:projectId/boards/:boardId/items', (req, res, next) => {
   const user = req.user;
   const { projectId, boardId } = req.params;
-  console.log(`Getting board id=${boardId} items for project id=${projectId}`);
-  boardDao.getItemsForBoard(boardId)
-    .then(items => {
-      console.log(items);
-      return res.send(items);
-    })
-    .catch(next);
+  const { type } = req.query;
+  if (type === undefined || type === 'all') {
+    console.log(`Getting board id=${boardId} items for project id=${projectId}`);
+    boardDao.getItemsForBoard(boardId)
+      .then(items => res.send(items))
+      .catch(next);
+  } else if (type === 'issue') {
+    console.log(`Getting board id=${boardId} issues for project id=${projectId}`);
+    boardDao.getIssuesForBoard(boardId)
+      .then(issues => res.send(issues))
+      .catch(next);
+  } else if (type === 'requirement') {
+    console.log(`Getting board id=${boardId} requirements for project id=${projectId}`);
+    boardDao.getRequirementsForBoard(boardId)
+      .then(requirements => res.send(requirements))
+      .catch(next);
+  } else {
+    console.error(`Unknown item type ${type}!  Can be "issue", "requirement", or "all"`);
+    next();
+  }
 });
+
 
 
 module.exports = router;

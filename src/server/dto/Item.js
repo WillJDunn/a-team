@@ -16,7 +16,7 @@ class Item {
     assignedToName,
     labels,
     createdAt) {
-    this.itemId = itemId;
+    this.id = itemId;
     this.statusId = statusId;
     this.statusName = statusName;
     this.priorityId = priorityId;
