@@ -45,7 +45,7 @@ const ProjectsPage = props => {
         <Paper>
             <Column style={_style.column}>
               <div style={_style.list}>
-                <ProjectsList onClick={handleProjectClick} projects={projects} />
+                <ProjectsList selectedProject={selectedProject} onClick={handleProjectClick} projects={projects} />
               </div>
               <CreateProjectWidget onSubmit={createProject} />
             </Column>

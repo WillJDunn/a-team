@@ -13,6 +13,7 @@ const ProjectsList = props => {
           <ListItem
             button
             key={`project_${project.id}`}
+            selected={project.id === props.selectedProject}
             onClick={() => props.onClick(project.id)}
           >
             <ListItemText primary={project.name} />
@@ -26,6 +27,7 @@ const ProjectsList = props => {
 ProjectsList.propTypes = {
   projects: PropTypes.array,
   onClick: PropTypes.func,
+  selectedProject: PropTypes.number,
 };
 
 ProjectsList.defaultProps = {
