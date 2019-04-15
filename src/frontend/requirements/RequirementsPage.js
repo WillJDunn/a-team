@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Column from '../common/Column';
 import Row from '../common/Row';
-import Item from './Item';
+import ItemContainer from './ItemContainer';
 import colormap from 'colormap';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import CreateItemWidget from './CreateItemWidget';
 
 const _style  = {
   statusColumn: {
@@ -24,10 +24,10 @@ const _style  = {
 
 
 const RequirementsPage = props => {
-  const { statuses, items } = props;
+  const { statuses, items, users, priorities } = props;
   const [selectedItem, setSelectedItem] = useState(undefined);
-  const handleItemClick = i => {
-    setSelectedItem(i);
+  const handleItemClick = (statusId, i) => {
+    setSelectedItem(`${statusId}_${i}`);
   };
   const columnColors = colormap({
     nshades: Math.max(statuses.length, 6),
@@ -38,9 +38,7 @@ const RequirementsPage = props => {
   }, {});
   return (
     <Column>
-      <Button variant="contained">
-        CREATE ITEM
-      </Button>
+      <CreateItemWidget users={users} priorities={priorities} statuses={statuses}/>
     <Row>
       {statuses.map((status, i) => (
         <Column
@@ -52,11 +50,12 @@ const RequirementsPage = props => {
             <List>
               {itemsByStatus[status.id].map((item, i) => (
                 <ListItem
+                  key={`${item.id}_${i}`}
                   button
-                  selected={selectedItem === i}
-                  onClick={() => handleItemClick(i)}
+                  selected={selectedItem === `${status.id}_${i}`}
+                  onClick={() => handleItemClick(status.id, i)}
                   >
-                  <Item {...item} />
+                  <ItemContainer {...item} statuses={statuses} project={props.project}/>
                 </ListItem>
                 ))}
             </List>
@@ -69,13 +68,21 @@ const RequirementsPage = props => {
 };
 
 RequirementsPage.propTypes = {
+  project: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
   items: PropTypes.array,
   statuses: PropTypes.array,
+  priorities: PropTypes.array,
+  users: PropTypes.array,
 };
 
 RequirementsPage.defaultProps = {
   items: [],
   statuses: [],
+  users: [],
 };
 
 export default RequirementsPage;

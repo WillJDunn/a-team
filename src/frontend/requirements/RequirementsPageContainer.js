@@ -22,12 +22,42 @@ const useStatuses = (project, board) => {
   return [statuses, setStatuses];
 };
 
+const useUsers = () => {
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    fetch('/api/users/')
+      .then(res => res.json())
+      .then(users => setUsers([...users]))
+  }, []);
+  return [users];
+};
+
+const usePriorities = projectId => {
+  const [priorities, setPriorities] = useState([]);
+  useEffect(() => {
+    fetch(`/api/projects/${projectId}/priorities`)
+      .then(res => res.json())
+      .then(priorities => setPriorities([...priorities]));
+  }, []);
+  return [priorities];
+};
+
+
+
 const RequirementsPageContainer = props => {
   const { project, board } = props;
   const [items] = useItems(project, board);
   const [statuses] = useStatuses(project, board);
+  const [users] = useUsers();
+  const [priorities] = usePriorities(project.id);
   return (
-    <RequirementsPage statuses={statuses} items={items} />
+    <RequirementsPage
+      statuses={statuses}
+      items={items}
+      project={project}
+      priorities={priorities}
+      users={users}
+    />
   )
 };
 

@@ -24,6 +24,18 @@ router.get('/:projectId', (req, res, next) => {
     .catch(next);
 });
 
+// priorities
+router.get('/:projectId/priorities', (req, res, next) => {
+  const user = req.user;
+  const { projectId } = req.params;
+  console.log(`Getting priorities for project id=${projectId}`);
+  projectDao.getPrioritiesForProject(projectId)
+    .then(priorities => res.send(priorities))
+    .catch(next);
+});
+
+
+
 router.post('/', (req, res, next) => {
   console.log('in projects root post');
   const { name, description } = req.body;

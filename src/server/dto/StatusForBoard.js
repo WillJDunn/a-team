@@ -2,6 +2,7 @@ class StatusForBoard {
   constructor(statusId, boardId, statusRank, statusName, description) {
     this.id = statusId;
     this.boardId = boardId;
+    this.rank = statusRank;
     this.name = statusName;
     this.description = description;
   }
