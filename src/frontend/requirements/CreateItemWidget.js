@@ -8,7 +8,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 const _style = {
   form: {
@@ -22,9 +21,10 @@ const _style = {
       marginTop: 12,
     },
   },
-  userMenu: {
+  dropdownMenu: {
     formControl: {
       minWidth: 120,
+      margin: 12,
     },
   },
 };
@@ -36,22 +36,19 @@ const UserDropDown = props => {
     props.setUser(evt.target.value);
   };
   return (
-  <FormControl style={_style.userMenu.formControl}>
-    <InputLabel htmlFor="assignedTo">Assigned To</InputLabel>
-    <Select
-      value={user.username}
-      onChange={handleChange}
-      input={<Input name="assignedTo" id="assignedTo"/>}
-      autoWidth
-    >
-      <MenuItem value={{ username: "None"}}>
-        <em>None</em>
-      </MenuItem>
-      {props.users.map(user =>
-        <MenuItem key={`${user.username}`} value={user}>{user.username}</MenuItem>
-      )}
-    </Select>
-  </FormControl>
+    <FormControl style={_style.dropdownMenu.formControl}>
+      <InputLabel htmlFor="assignedTo">Assigned To</InputLabel>
+      <Select
+        value={user}
+        onChange={handleChange}
+        input={<Input name="assignedTo" id="assignedTo"/>}
+        autoWidth
+      >
+        {props.users.map(user =>
+          <MenuItem key={`${user.username}`} value={user}>{user.username}</MenuItem>
+        )}
+      </Select>
+    </FormControl>
   );
 };
 
@@ -62,17 +59,14 @@ const PriorityDropdown = props => {
     props.setPriority(evt.target.value);
   };
   return (
-    <FormControl style={_style.userMenu.formControl}>
+    <FormControl style={_style.dropdownMenu.formControl}>
       <InputLabel htmlFor="priority">Priority</InputLabel>
       <Select
-        value={priority.name}
+        value={priority}
         onChange={handleChange}
         input={<Input name="priority" id="priority"/>}
         autoWidth
       >
-        <MenuItem value={{name: "None"}}>
-          <em>None</em>
-        </MenuItem>
         {props.priorities.map(priority =>
           <MenuItem key={`${priority.name}`} value={priority}>{priority.name}</MenuItem>
         )}
@@ -90,17 +84,14 @@ const StatusDropdown = props => {
     props.setStatus(evt.target.value);
   };
   return (
-    <FormControl style={_style.userMenu.formControl}>
+    <FormControl style={_style.dropdownMenu.formControl}>
       <InputLabel htmlFor="status">Status</InputLabel>
       <Select
-        value={status.name}
+        value={status}
         onChange={handleChange}
         input={<Input name="status" id="status"/>}
         autoWidth
       >
-        <MenuItem value={{name: "None"}}>
-          <em>None</em>
-        </MenuItem>
         {props.statuses.map(status =>
           <MenuItem key={`${status.name}`} value={status}>{status.name}</MenuItem>
         )}
