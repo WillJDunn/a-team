@@ -66,6 +66,17 @@ router.get('/:projectId/boards/:boardId/items', (req, res, next) => {
   }
 });
 
+router.post('/:projectId/boards/:boardId/items', (req, res, next) => {
+  const user = req.user;
+  const { boardId } = req.params;
+  const item = req.body;
+  item.createdBy = user.id || 0;
+  console.log(`Creating item on board id=${boardId}`);
+  boardDao.createItemForBoard(boardId, item)
+    .then(itemId => res.send(itemId))
+    .catch(next);
+});
+
 
 
 module.exports = router;

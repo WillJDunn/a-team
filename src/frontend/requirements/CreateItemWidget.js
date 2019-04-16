@@ -115,17 +115,19 @@ const CreateItemWidget = props => {
 
   const handleSubmit = () => {
     const item = {
-      status,
-      priority,
+      projectId: props.project.id,
+      boardId: props.board.id,
+      statusId: status.id,
+      priorityId: priority.id,
       isIssue,
       name,
       description,
       dueDate,
       timeEstimate,
-      createdBy,
-      assignedTo,
+      assignedTo: assignedTo.id,
       labels,
     };
+    console.log(item);
     props.onSubmit(item);
     // setName('');
     // setDescription('');
@@ -147,12 +149,13 @@ const CreateItemWidget = props => {
         variant="contained"
         color="primary"
         onClick={handleDialogOpen}
+        style={{width: 250, marginLeft: 12}}
       >
         CREATE ITEM
       </Button>
       <Dialog open={isDialogOpen} onClose={handleClose}>
         <div style={_style.form.root}>
-          <strong style={_style.form.title}>Create Item for {props.projectName}</strong>
+          <strong style={_style.form.title}>Create Item for {props.project.name} > {props.board.name}</strong>
           <StatusDropdown statuses={props.statuses} setStatus={setStatus}/>
           <PriorityDropdown priorities={props.priorities} setPriority={setPriority}/>
           <TextField
@@ -214,6 +217,17 @@ CreateItemWidget.propTypes = {
   statuses: PropTypes.array,
   users: PropTypes.array,
   onSubmit: PropTypes.func,
+  project: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  board: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+
 };
 
 CreateItemWidget.defaultProps = {

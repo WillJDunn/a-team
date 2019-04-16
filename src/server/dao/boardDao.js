@@ -59,12 +59,9 @@ const getIssuesForBoard = boardId => {
 const createItemForBoard = (boardId, item) => {
   const values = [item.projectId, item.boardId, item.statusId, item.priorityId, item.isIssue,
     item.name, item.description, item.dueDate, item.timeEstimate, item.createdBy, item.assignedTo, item.labels];
-  const sql = 'SET @itemId = 0; CALL add_item(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @itemId); SELECT @itemId as itemId;';
+  const sql = 'CALL add_item(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   return db.query(sql, values)
-    .then(dbRes => {
-      const rows = dbRes[dbRes.length - 1];
-      return rows[0].itemId;
-    });
+    .then(dbRes => dbRes[0][0].item_id);
 };
 
 module.exports = {

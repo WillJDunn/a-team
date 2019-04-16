@@ -55,6 +55,7 @@ const RequirementsPageContainer = props => {
       statuses={statuses}
       items={items}
       project={project}
+      board={board}
       priorities={priorities}
       users={users}
     />

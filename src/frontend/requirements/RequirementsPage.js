@@ -24,7 +24,7 @@ const _style  = {
 
 
 const RequirementsPage = props => {
-  const { statuses, items, users, priorities } = props;
+  const { statuses, items, users, priorities, project, board } = props;
   const [selectedItem, setSelectedItem] = useState(undefined);
   const handleItemClick = (statusId, i) => {
     setSelectedItem(`${statusId}_${i}`);
@@ -38,37 +38,48 @@ const RequirementsPage = props => {
   }, {});
   return (
     <Column>
-      <CreateItemWidget users={users} priorities={priorities} statuses={statuses}/>
-    <Row>
-      {statuses.map((status, i) => (
-        <Column
-          style={{ ..._style.statusColumn, backgroundColor: columnColors[i] }}
-          key={`${status.id}_status`}
-        >
-          <h1 style={_style.columnTitle}>{status.name}</h1>
-          <div>
-            <List>
-              {itemsByStatus[status.id].map((item, i) => (
-                <ListItem
-                  key={`${item.id}_${i}`}
-                  button
-                  selected={selectedItem === `${status.id}_${i}`}
-                  onClick={() => handleItemClick(status.id, i)}
+      <CreateItemWidget
+        users={users}
+        priorities={priorities}
+        statuses={statuses}
+        project={project}
+        board={board}
+      />
+      <Row>
+        {statuses.map((status, i) => (
+          <Column
+            style={{ ..._style.statusColumn, backgroundColor: columnColors[i] }}
+            key={`${status.id}_status`}
+          >
+            <h1 style={_style.columnTitle}>{status.name}</h1>
+            <div>
+              <List>
+                {itemsByStatus[status.id].map((item, i) => (
+                  <ListItem
+                    key={`${item.id}_${i}`}
+                    button
+                    selected={selectedItem === `${status.id}_${i}`}
+                    onClick={() => handleItemClick(status.id, i)}
                   >
-                  <ItemContainer {...item} statuses={statuses} project={props.project}/>
-                </ListItem>
+                    <ItemContainer {...item} statuses={statuses} project={props.project}/>
+                  </ListItem>
                 ))}
-            </List>
-          </div>
-        </Column>
-      ))}
-    </Row>
+              </List>
+            </div>
+          </Column>
+        ))}
+      </Row>
     </Column>
   )
 };
 
 RequirementsPage.propTypes = {
   project: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  board: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
     id: PropTypes.number.isRequired,
