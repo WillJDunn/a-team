@@ -1046,7 +1046,27 @@ CREATE OR REPLACE VIEW `v_items` AS
         users AS created_users ON items.created_by = created_users.user_id
             LEFT JOIN
         users AS assigned_users ON items.assigned_to = assigned_users.user_id
-    GROUP BY items.item_id;
+    GROUP BY
+    items.item_id,
+    items.project_id,
+    projects.project_name,
+    items.board_id,
+    boards.board_name,
+    items.status_id,
+    statuses.status_name,
+    items.priority_id,
+    priorities.priority_name,
+    items.is_issue,
+    items.item_name,
+    items.created_at,
+    items.due_date,
+    items.description,
+    items.time_estimate,
+    items.created_by,
+    items.assigned_to,
+    items.labels,
+    created_by_name,
+    assigned_to_name;
 
 -- -----------------------------------------------------
 -- View `teama`.`v_issues`
@@ -1092,7 +1112,27 @@ CREATE OR REPLACE VIEW `v_issues` AS
         users AS assigned_users ON items.assigned_to = assigned_users.user_id
     WHERE
         items.is_issue = 1
-    GROUP BY items.item_id;
+    GROUP BY
+    items.item_id,
+    items.project_id,
+    projects.project_name,
+    items.board_id,
+    boards.board_name,
+    items.status_id,
+    statuses.status_name,
+    items.priority_id,
+    priorities.priority_name,
+    items.is_issue,
+    items.item_name,
+    items.description,
+    items.due_date,
+    items.time_estimate,
+    items.created_by,
+    items.assigned_to,
+    items.labels,
+    items.created_at,
+    created_by_name,
+    assigned_to_name;
 
 -- -----------------------------------------------------
 -- View `teama`.`v_comments`
