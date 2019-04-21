@@ -8,10 +8,10 @@ const Item = props => {
       <div>Name: {props.name}</div>
       <div>Status: {props.statusName}</div>
       <div>Priority: {props.priorityName}</div>
-      <div>Is issue: {props.isIssue}</div>
+      <div>{props.isIssue ? 'Issue' : 'Requirement'}</div>
       <div>Due date: {props.dueDate}</div>
       <div>Created by: {props.createdByName}</div>
-      <div>Assigned to: {props.assignedTo}</div>
+      <div>Assigned to: {props.assignedToName}</div>
       <div>Created at: {props.createdAt}</div>
     </Paper>
   );

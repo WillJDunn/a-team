@@ -9,7 +9,19 @@ const useItems = (project, board) => {
       .then(res => res.json())
       .then(items => setItems([...items]));
   }, []);
-  return [items, setItems];
+  const createItem = item => {
+    const opts = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item),
+    };
+    fetch(`/api/projects/${item.projectId}/boards/${item.boardId}/items`, opts)
+      .then(res => res.text())
+      .then(() => setItems([...items, item]))
+  };
+  return [items, setItems, createItem];
 };
 
 const useStatuses = (project, board) => {
@@ -43,10 +55,9 @@ const usePriorities = projectId => {
 };
 
 
-
 const RequirementsPageContainer = props => {
   const { project, board } = props;
-  const [items] = useItems(project, board);
+  const [items, _, createItem] = useItems(project, board);
   const [statuses] = useStatuses(project, board);
   const [users] = useUsers();
   const [priorities] = usePriorities(project.id);
@@ -58,6 +69,7 @@ const RequirementsPageContainer = props => {
       board={board}
       priorities={priorities}
       users={users}
+      onCreateItem={createItem}
     />
   )
 };

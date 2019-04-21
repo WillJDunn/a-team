@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
+import moment from 'moment';
 
 const _style = {
   form: {
@@ -31,7 +32,7 @@ const _style = {
 
 const UserDropDown = props => {
   const [user, setUser] = useState({username: "None"});
-  const handleChange = evt => {
+  const handleUserChange = evt => {
     setUser(evt.target.value);
     props.setUser(evt.target.value);
   };
@@ -40,7 +41,7 @@ const UserDropDown = props => {
       <InputLabel htmlFor="assignedTo">Assigned To</InputLabel>
       <Select
         value={user}
-        onChange={handleChange}
+        onChange={handleUserChange}
         input={<Input name="assignedTo" id="assignedTo"/>}
         autoWidth
       >
@@ -54,7 +55,7 @@ const UserDropDown = props => {
 
 const PriorityDropdown = props => {
   const [priority, setPriority] = useState({name: "None"});
-  const handleChange = evt => {
+  const handlePriorityChange = evt => {
     setPriority(evt.target.value);
     props.setPriority(evt.target.value);
   };
@@ -63,7 +64,7 @@ const PriorityDropdown = props => {
       <InputLabel htmlFor="priority">Priority</InputLabel>
       <Select
         value={priority}
-        onChange={handleChange}
+        onChange={handlePriorityChange}
         input={<Input name="priority" id="priority"/>}
         autoWidth
       >
@@ -77,9 +78,7 @@ const PriorityDropdown = props => {
 
 const StatusDropdown = props => {
   const [status, setStatus] = useState({name: "None"});
-  console.log(status);
-  const handleChange = evt => {
-    console.log(evt.target.value);
+  const handleStatusChange = evt => {
     setStatus(evt.target.value);
     props.setStatus(evt.target.value);
   };
@@ -88,7 +87,7 @@ const StatusDropdown = props => {
       <InputLabel htmlFor="status">Status</InputLabel>
       <Select
         value={status}
-        onChange={handleChange}
+        onChange={handleStatusChange}
         input={<Input name="status" id="status"/>}
         autoWidth
       >
@@ -102,16 +101,18 @@ const StatusDropdown = props => {
 
 const CreateItemWidget = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [status, setStatus] = useState(props.status);
-  const [priority, setPriority] = useState(props.priority);
-  const [isIssue, setIsIssue] = useState(props.isIssue);
-  const [name, setName] = useState(props.name);
-  const [description, setDescription] = useState(props.description);
-  const [dueDate, setDueDate] = useState(props.dueDate);
-  const [timeEstimate, setTimeEstimate] = useState(props.timeEstimate);
-  const [createdBy, setCreatedBy] = useState(props.createdBy);
-  const [assignedTo, setAssignedTo] = useState(props.assignedTo);
-  const [labels, setLabels] = useState(props.labels);
+  const [status, setStatus] = useState(props.item.status || '');
+  const [priority, setPriority] = useState(props.item.priority || '');
+  const [isIssue, setIsIssue] =
+    useState(props.item.isIssue || !Boolean(props.requirement));
+  const [name, setName] = useState(props.item.name || '');
+  const [description, setDescription] = useState(props.item.description || '');
+  const [dueDate, setDueDate] =
+    useState(props.item.dueDate || moment().format('YYYY-MM-DD'));
+  const [timeEstimate, setTimeEstimate] = useState(props.item.timeEstimate || '');
+  const [createdBy, setCreatedBy] = useState(props.item.createdBy || '');
+  const [assignedTo, setAssignedTo] = useState(props.item.assignedTo || '');
+  const [labels, setLabels] = useState(props.item.labels || '');
 
   const handleSubmit = () => {
     const item = {
@@ -119,7 +120,7 @@ const CreateItemWidget = props => {
       boardId: props.board.id,
       statusId: status.id,
       priorityId: priority.id,
-      isIssue,
+      isIssue: !Boolean(props.requirement),
       name,
       description,
       dueDate,
@@ -129,11 +130,15 @@ const CreateItemWidget = props => {
     };
     console.log(item);
     props.onSubmit(item);
-    // setName('');
-    // setDescription('');
-    // setStatus('');
-    // setPriority('');
-    // setIsIssue('');
+    setStatus('');
+    setPriority('');
+    setIsIssue(!Boolean(props.requirement));
+    setName('');
+    setDescription('');
+    setDueDate('');
+    setTimeEstimate('');
+    setAssignedTo('');
+    setLabels('');
     setIsDialogOpen(false);
   };
   const handleClose = () => {
@@ -143,6 +148,7 @@ const CreateItemWidget = props => {
     setIsDialogOpen(true);
   };
   const disabled = !Boolean(status && priority && name && description);
+  const itemString = props.requirement ? 'Requirement' : 'Issue';
   return (
     <React.Fragment>
       <Button
@@ -151,11 +157,11 @@ const CreateItemWidget = props => {
         onClick={handleDialogOpen}
         style={{width: 250, marginLeft: 12}}
       >
-        CREATE ITEM
+        CREATE {itemString}
       </Button>
       <Dialog open={isDialogOpen} onClose={handleClose}>
         <div style={_style.form.root}>
-          <strong style={_style.form.title}>Create Item for {props.project.name} > {props.board.name}</strong>
+          <strong style={_style.form.title}>Create {itemString} for {props.project.name} > {props.board.name}</strong>
           <StatusDropdown statuses={props.statuses} setStatus={setStatus}/>
           <PriorityDropdown priorities={props.priorities} setPriority={setPriority}/>
           <TextField
@@ -164,26 +170,32 @@ const CreateItemWidget = props => {
             onChange={evt => setName(evt.target.value)}
             style={{margin: 12}}
           />
-          <TextField
-            label="Is issue"
-            value={isIssue}
-            onChange={evt => setIsIssue(evt.target.value)}
-            style={{margin: 12}}
-          />
+          {props.edit && (
+            <TextField
+              label="Is issue"
+              value={isIssue}
+              onChange={evt => setIsIssue(evt.target.value)}
+              style={{ margin: 12 }}
+            />
+          )}
           <TextField
             label="Description"
+            multiline
+            rows="4"
             value={description}
             onChange={evt => setDescription(evt.target.value)}
             style={{margin: 12}}
           />
           <TextField
             label="Due Date"
+            type="date"
             value={dueDate}
             onChange={evt => setDueDate(evt.target.value)}
             style={{margin: 12}}
           />
           <TextField
             label="Time Estimate"
+            type="number"
             value={timeEstimate}
             onChange={evt => setTimeEstimate(evt.target.value)}
             style={{margin: 12}}
@@ -212,6 +224,8 @@ const CreateItemWidget = props => {
 };
 
 CreateItemWidget.propTypes = {
+  requirement: PropTypes.bool,
+  edit: PropTypes.bool,
   projectName: PropTypes.string,
   priorities: PropTypes.array,
   statuses: PropTypes.array,
@@ -227,7 +241,7 @@ CreateItemWidget.propTypes = {
     description: PropTypes.string,
     id: PropTypes.number.isRequired,
   }).isRequired,
-
+  item: PropTypes.object,
 };
 
 CreateItemWidget.defaultProps = {
@@ -235,6 +249,7 @@ CreateItemWidget.defaultProps = {
   users: [],
   priorities: [],
   statuses: [],
+  item: {},
 };
 
 export default CreateItemWidget;

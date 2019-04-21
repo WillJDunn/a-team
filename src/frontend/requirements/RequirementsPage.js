@@ -24,7 +24,7 @@ const _style  = {
 
 
 const RequirementsPage = props => {
-  const { statuses, items, users, priorities, project, board } = props;
+  const { statuses, items, users, priorities, project, board, onCreateItem } = props;
   const [selectedItem, setSelectedItem] = useState(undefined);
   const handleItemClick = (statusId, i) => {
     setSelectedItem(`${statusId}_${i}`);
@@ -39,11 +39,13 @@ const RequirementsPage = props => {
   return (
     <Column>
       <CreateItemWidget
+        requirement
         users={users}
         priorities={priorities}
         statuses={statuses}
         project={project}
         board={board}
+        onSubmit={onCreateItem}
       />
       <Row>
         {statuses.map((status, i) => (
@@ -88,12 +90,14 @@ RequirementsPage.propTypes = {
   statuses: PropTypes.array,
   priorities: PropTypes.array,
   users: PropTypes.array,
+  onCreateItem: PropTypes.func,
 };
 
 RequirementsPage.defaultProps = {
   items: [],
   statuses: [],
   users: [],
+  onCreateItem: () => {},
 };
 
 export default RequirementsPage;
