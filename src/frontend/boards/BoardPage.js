@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import RequirementsPageContainer from '../requirements/RequirementsPageContainer';
 import ChatPage from '../chat/ChatPage';
-import IssuesPage from '../issues/IssuesPage';
+import IssuesPageContainer from '../issues/IssuesPageContainer';
 import Row from '../common/Row';
 
 
@@ -37,7 +37,7 @@ const BoardPage = props => {
       </Row>
       {tabValue === 0 && <RequirementsPageContainer project={project} board={board} />}
       {tabValue === 1 && <ChatPage />}
-      {tabValue === 2 && <IssuesPage />}
+      {tabValue === 2 && <IssuesPageContainer project={project} board={board} />}
     </div>
   );
 };

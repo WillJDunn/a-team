@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Column from '../common/Column';
 import Row from '../common/Row';
-import ItemContainer from './ItemContainer';
+import Item from './Item';
 import colormap from 'colormap';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import CreateItemWidget from './CreateItemWidget';
 
 const _style  = {
+  root: {
+    marginTop: 16,
+  },
   statusColumn: {
     width: 250,
     opacity: 0.5,
@@ -19,6 +22,7 @@ const _style  = {
     textAlign: 'center',
     fontWeight: 'bold',
     color: 'black',
+    opacity: 1.0,
   },
 };
 
@@ -37,7 +41,7 @@ const RequirementsPage = props => {
     return map;
   }, {});
   return (
-    <Column>
+    <Column style={_style.root}>
       <CreateItemWidget
         requirement
         users={users}
@@ -63,7 +67,13 @@ const RequirementsPage = props => {
                     selected={selectedItem === `${status.id}_${i}`}
                     onClick={() => handleItemClick(status.id, i)}
                   >
-                    <ItemContainer {...item} statuses={statuses} project={props.project}/>
+                    <Item
+                      {...item}
+                      project={props.project}
+                      statuses={statuses}
+                      priorities={priorities}
+                      users={users}
+                    />
                   </ListItem>
                 ))}
               </List>
