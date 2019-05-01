@@ -10,6 +10,8 @@ const userDao = require('./dao/userDao');
 const usersRoutes = require('./routes/users');
 const projectsRoutes = require('./routes/projects');
 const boardsRoutes = require('./routes/boards');
+const cors = require('cors');
+const chat = require('.routes/chat');
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
@@ -40,6 +42,7 @@ const app = express();
 // to give us automated parsing of request bodies
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+//app.use(cors());
 
 // adds fairly verbose logging to the npm server start command
 app.use(pino());
@@ -113,6 +116,7 @@ app.get('/authrequired', (req, res) => {
 app.use('/api/users', usersRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/projects/', boardsRoutes);
+app.use('/api/chat', chat);
 
 app.listen(SERVER_PORT, () => {
   console.log(`Express server is running on localhost:${SERVER_PORT}`);
