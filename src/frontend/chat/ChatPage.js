@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UsernameForm from './UsernameForm';
+import PropTypes from 'prop-types';
 import ChatScreen from './ChatScreen';
 
 
@@ -9,7 +9,7 @@ class ChatPage extends Component {
     this.state = {
       currentUsername: '',
       currentScreen: 'WhatIsYourUsernameScreen'
-    }
+    };
     this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this)
   }
 
@@ -21,7 +21,7 @@ class ChatPage extends Component {
       },
       body: JSON.stringify({ username }),
     })
-    .then(response => {
+    .then(() => {
       this.setState({
         currentUsername: username,
         currentScreen: 'ChatScreen'
@@ -31,21 +31,20 @@ class ChatPage extends Component {
   }
 
   render() {
-    if (this.state.currentScreen === 'WhatIsYourUsernameScreen') {
-      return <UsernameForm onSubmit={this.onUsernameSubmitted} />
+    if (!this.props.username) {
+      console.log('no username', this.props.username);
+      this.props.onNoUsername();
+      return null;
     }
-    if (this.state.currentScreen === 'ChatScreen') {
-      return <ChatScreen currentUsername={this.state.currentUsername} />
-    }
+    this.onUsernameSubmitted(this.props.username);
+    return <ChatScreen currentUsername={this.props.username} />
   }
 }
 
+ChatPage.propTypes = {
+  username: PropTypes.string,
+  onNoUsername: PropTypes.func.isRequired,
+};
+
 export default ChatPage;
 
-// const ChatPage = () => {
-//   return (
-//     <h1>Chat Coming Soon</h1>
-//   )
-// };
-//
-// export default ChatPage;
