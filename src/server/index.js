@@ -10,8 +10,8 @@ const userDao = require('./dao/userDao');
 const usersRoutes = require('./routes/users');
 const projectsRoutes = require('./routes/projects');
 const boardsRoutes = require('./routes/boards');
-const cors = require('cors');
-const chat = require('.routes/chat');
+// const cors = require('cors');
+const chat = require('./routes/chat');
 
 const SERVER_PORT = process.env.SERVER_PORT || 3001;
 
