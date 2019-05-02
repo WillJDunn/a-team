@@ -521,7 +521,7 @@ CALL grant_project_admin(
 -- -----------------------------------------------------
 -- procedure revoke_project_admin
 -- -----------------------------------------------------
--- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
+-- Note: updates added_by field to the value in_modified_by, since tracking who granted or revoked
 -- admin privileges is important
 -- The following parameters cannot be null: board_id, user_id
 CALL revoke_project_admin(
