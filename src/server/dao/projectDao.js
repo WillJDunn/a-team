@@ -1,5 +1,6 @@
 const db = require('./PooledDatabaseConnection');
 const Project = require('../dto/Project');
+const Priority = require('../dto/Priority');
 
 const getProjects = () => {
   const sql = 'SELECT * FROM teama.projects';
@@ -22,8 +23,15 @@ const createProject = project => {
   .then(dbRes => dbRes.insertId);
 };
 
+const getPrioritiesForProject = projectId => {
+  const sql = 'SELECT * from priorities WHERE project_id = ?';
+  return db.query(sql, [projectId])
+    .then(results => results.map(result => Priority.fromDB(result)));
+};
+
 module.exports = {
   getProjects,
   getProjectById,
   createProject,
+  getPrioritiesForProject,
 };

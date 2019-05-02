@@ -55,6 +55,7 @@ const CreateUserWidget = props => {
       </div>
       <div style={_style.textContainer}>
         <TextField
+          autoFocus
           required
           label="Username"
           value={username}

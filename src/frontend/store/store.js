@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from 'redux-starter-kit'
+import { configureStore } from 'redux-starter-kit'
 import { createLogger } from 'redux-logger';
 import { Iterable } from 'immutable';
 import thunk from 'redux-thunk';

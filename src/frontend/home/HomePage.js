@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar/index';
 import LoginButtonContainer from '../login/LoginButtonContainer';
 import NavigationButtonContainer from './NavigationButtonContainer';
-import Button from '@material-ui/core/Button';
 
 const _style = {
   root: {

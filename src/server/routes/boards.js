@@ -16,7 +16,7 @@ router.get('/:projectId/boards/:boardId', (req, res, next) => {
   const user = req.user;
   const { projectId, boardId } = req.params;
   console.log(`Getting board id=${boardId} for project id=${projectId}`);
-  boardDao.getBoardById(projectId, boardId)
+  boardDao.getBoardById(boardId)
     .then(board => res.send(board))
     .catch(next);
 });
@@ -29,5 +29,57 @@ router.post('/:projectId/boards', (req, res, next) => {
     .then(insertId => res.send(`${insertId}`))
     .catch(next);
 });
+
+// statuses
+router.get('/:projectId/boards/:boardId/statuses', (req, res, next) => {
+  const user = req.user;
+  const { projectId, boardId } = req.params;
+  console.log(`Getting board id=${boardId} statuses for project id=${projectId}`);
+  boardDao.getStatusesForBoard(boardId)
+    .then(statuses => res.send(statuses))
+    .catch(next);
+});
+
+// items
+router.get('/:projectId/boards/:boardId/items', (req, res, next) => {
+  const user = req.user;
+  const { projectId, boardId } = req.params;
+  const { type } = req.query;
+  if (type === undefined || type === 'all') {
+    console.log(`Getting board id=${boardId} items for project id=${projectId}`);
+    boardDao.getItemsForBoard(boardId)
+      .then(items => res.send(items))
+      .catch(next);
+  } else if (type === 'issue') {
+    console.log(`Getting board id=${boardId} issues for project id=${projectId}`);
+    boardDao.getIssuesForBoard(boardId)
+      .then(issues => res.send(issues))
+      .catch(next);
+  } else if (type === 'requirement') {
+    console.log(`Getting board id=${boardId} requirements for project id=${projectId}`);
+    boardDao.getRequirementsForBoard(boardId)
+      .then(requirements => res.send(requirements))
+      .catch(next);
+  } else {
+    console.error(`Unknown item type ${type}!  Can be "issue", "requirement", or "all"`);
+    next();
+  }
+});
+
+router.post('/:projectId/boards/:boardId/items', (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    res.redirect('/login');
+  }
+  const user = req.user;
+  const { boardId } = req.params;
+  const item = req.body;
+  item.createdBy = user.id;
+  console.log(`Creating item on board id=${boardId}`);
+  boardDao.createItemForBoard(boardId, item)
+    .then(itemId => res.send(`${itemId}`))
+    .catch(next);
+});
+
+
 
 module.exports = router;

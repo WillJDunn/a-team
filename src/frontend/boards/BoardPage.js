@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
-import RequirementsPage from '../requirements/RequirementsPage';
+import RequirementsPageContainer from '../requirements/RequirementsPageContainer';
 import ChatPage from '../chat/ChatPage';
-import IssuesPage from '../issues/IssuesPage';
+import IssuesPageContainer from '../issues/IssuesPageContainer';
 import Row from '../common/Row';
-import NavigationButton from './NavigationButton';
+
 
 const _style = {
   tabs: {
@@ -35,9 +35,9 @@ const BoardPage = props => {
           </Paper>
         </div>
       </Row>
-      {tabValue === 0 && <RequirementsPage />}
+      {tabValue === 0 && <RequirementsPageContainer project={project} board={board} />}
       {tabValue === 1 && <ChatPage />}
-      {tabValue === 2 && <IssuesPage />}
+      {tabValue === 2 && <IssuesPageContainer project={project} board={board} />}
     </div>
   );
 };
