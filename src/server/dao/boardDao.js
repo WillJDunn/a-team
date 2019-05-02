@@ -24,12 +24,9 @@ const getBoardById = boardId => {
 
 const createBoardForProject = (projectId, board) => {
   const values = [projectId, board.name, board.description];
-  const sql = 'SET @insertId = 0; CALL add_board(?, ?, ?, @insertId); SELECT @insertId as insertId';
+  const sql = 'CALL add_board(?, ?, ?);';
   return db.query(sql, values)
-    .then(dbRes => {
-      const rows = dbRes[dbRes.length - 1];
-      return rows[0].insertId;
-    });
+    .then(dbRes => dbRes[0][0].board_id);
 };
 
 const getStatusesForBoard = boardId => {

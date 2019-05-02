@@ -4,7 +4,6 @@ import IssuesPage from './IssuesPage';
 
 const useItems = (project, board) => {
   const [items, setItems] = useState([]);
-  console.log('getting issues');
   useEffect(() => {
     fetch(`/api/projects/${project.id}/boards/${board.id}/items?type=issue`)
       .then(res => res.json())

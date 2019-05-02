@@ -101,31 +101,32 @@ const StatusDropdown = props => {
 
 const CreateItemWidget = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [status, setStatus] = useState(props.item.status || '');
-  const [priority, setPriority] = useState(props.item.priority || '');
+  const [status, setStatus] = useState('');
+  const [priority, setPriority] = useState('');
   const [isIssue, setIsIssue] =
-    useState(props.item.isIssue || !Boolean(props.requirement));
-  const [name, setName] = useState(props.item.name || '');
-  const [description, setDescription] = useState(props.item.description || '');
-  const [dueDate, setDueDate] =
-    useState(props.item.dueDate || moment().format('YYYY-MM-DD'));
-  const [timeEstimate, setTimeEstimate] = useState(props.item.timeEstimate || '');
-  const [createdBy, setCreatedBy] = useState(props.item.createdBy || '');
-  const [assignedTo, setAssignedTo] = useState(props.item.assignedTo || '');
-  const [labels, setLabels] = useState(props.item.labels || '');
+    useState(!Boolean(props.requirement));
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState(moment().format('YYYY-MM-DD'));
+  const [timeEstimate, setTimeEstimate] = useState('');
+  const [assignedTo, setAssignedTo] = useState('');
+  const [labels, setLabels] = useState('');
 
   const handleSubmit = () => {
     const item = {
       projectId: props.project.id,
       boardId: props.board.id,
       statusId: status.id,
+      statusName: status.name,
       priorityId: priority.id,
+      priorityName: priority.name,
       isIssue: !Boolean(props.requirement),
       name,
       description,
       dueDate,
-      timeEstimate,
+      timeEstimate: timeEstimate || 0,
       assignedTo: assignedTo.id,
+      assignedToName: assignedTo.username,
       labels,
     };
     console.log(item);
