@@ -701,7 +701,7 @@ DROP procedure IF EXISTS `teama`.`grant_board_admin`;
 
 DELIMITER $$
 USE `teama`$$
--- Note: updates added_by field = in_modified_by, since tracking who granted or revoked
+-- Note: updates added_by field to value in_modified_by, since tracking who granted or revoked
 -- admin privileges is important
 CREATE PROCEDURE `grant_board_admin` (
   IN in_board_id INT,
