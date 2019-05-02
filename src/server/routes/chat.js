@@ -1,6 +1,6 @@
 const Chatkit = require('@pusher/chatkit-server');
-const router = express.Router();
 const express = require('express');
+const router = express.Router();
 const chatDao =  require('../dao/chatDao');
 
 
