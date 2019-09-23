@@ -75,7 +75,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
-### TeamA DB
+## TeamA DB
 
 The included SQL script "teama_schema.sql" creates a schema "teama" owned by a new user "teama" with default password "team1_teamA". It requires MYSQL 5.7.  
 
@@ -110,6 +110,8 @@ The following views should be used when querying tables:
 | items         | v_items 
 | issues        | v_issues      
 | comments      | v_comments
+
+### Available procedures
 
 For queries use SELECT statements. For INSERTS and DELETES use the procedures described below.
 The passwords column of the users table is SHA2 encrypted. To check if a user's password is correct use the following stored procedures:
